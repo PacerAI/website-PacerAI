@@ -549,27 +549,53 @@ html, body, .wp-site-blocks {
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": "Why ARR Waterfall Models Matter for SaaS Growth",
-  "datePublished": "2026-01-27",
-  "author": {
-    "@type": "Organization",
-    "name": "Pacer AI",
-    "url": "https://getpacerai.com"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Pacer AI",
-    "url": "https://getpacerai.com",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://getpacerai.com/wp-content/uploads/2025/04/PacerAI_Logo_Horizontal_Full-Color-scaled.webp"
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "Why ARR Waterfall Models Matter for SaaS Growth",
+      "datePublished": "2026-01-27",
+      "author": {
+        "@type": "Organization",
+        "name": "Pacer AI",
+        "url": "https://getpacerai.com"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Pacer AI",
+        "url": "https://getpacerai.com",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://getpacerai.com/wp-content/uploads/2025/04/PacerAI_Logo_Horizontal_Full-Color-scaled.webp"
+        }
+      },
+      "articleSection": "ARR Snowballs",
+      "mainEntityOfPage": {
+        "@type": "WebPage"
+      }
     }
-  },
-  "articleSection": "ARR Snowballs",
-  "mainEntityOfPage": {
-    "@type": "WebPage"
-  }
+    ,
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+            {
+                  "@type": "Question",
+                  "name": "What is an ARR waterfall model?",
+                  "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "An ARR waterfall model systematically breaks down period-over-period ARR changes into components: Starting ARR, New ARR, Expansion ARR, Contraction ARR, and Churned ARR, revealing the drivers behind revenue growth or decline."
+                  }
+            },
+            {
+                  "@type": "Question",
+                  "name": "Why do ARR waterfall models matter for SaaS growth?",
+                  "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "ARR waterfall models matter because they expose the specific revenue dynamics behind aggregate growth numbers, helping PE-backed SaaS operators identify whether growth comes from new sales, expansion, or is being offset by churn and contraction."
+                  }
+            }
+      ]
+}
+  ]
 }
 </script>
 

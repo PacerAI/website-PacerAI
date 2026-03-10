@@ -24,6 +24,16 @@ POSTS = [
         "category": "ARR Snowballs",
         "date": "January 27, 2026",
         "date_iso": "2026-01-27",
+        "faq": [
+            {
+                "q": "What is an ARR waterfall model?",
+                "a": "An ARR waterfall model systematically breaks down period-over-period ARR changes into components: Starting ARR, New ARR, Expansion ARR, Contraction ARR, and Churned ARR, revealing the drivers behind revenue growth or decline."
+            },
+            {
+                "q": "Why do ARR waterfall models matter for SaaS growth?",
+                "a": "ARR waterfall models matter because they expose the specific revenue dynamics behind aggregate growth numbers, helping PE-backed SaaS operators identify whether growth comes from new sales, expansion, or is being offset by churn and contraction."
+            },
+        ],
     },
     {
         "id": 264,
@@ -32,6 +42,16 @@ POSTS = [
         "category": "RevOps",
         "date": "January 20, 2026",
         "date_iso": "2026-01-20",
+        "faq": [
+            {
+                "q": "How can AI improve revenue operations?",
+                "a": "AI improves RevOps by automating data unification across CRM, billing, and product usage systems, enabling real-time ARR analysis, anomaly detection, and predictive churn modeling without replacing existing GTM workflows."
+            },
+            {
+                "q": "What are the risks of using AI in RevOps?",
+                "a": "The main risks include over-automating before data foundations are solid, breaking existing GTM workflows by forcing new processes, and relying on AI outputs without validating against source-of-truth financial data."
+            },
+        ],
     },
     {
         "id": 244,
@@ -40,6 +60,16 @@ POSTS = [
         "category": "ARR Snowballs",
         "date": "January 12, 2026",
         "date_iso": "2026-01-12",
+        "faq": [
+            {
+                "q": "What is ARR snowball analysis?",
+                "a": "ARR snowball analysis tracks how Annual Recurring Revenue compounds over time by breaking it into components — new business, expansion, contraction, and churn — to identify which growth levers are strongest and where revenue leakage occurs."
+            },
+            {
+                "q": "How do you find expansion revenue drivers?",
+                "a": "Identify expansion drivers by analyzing upsell and cross-sell patterns across customer segments, tracking net revenue retention by cohort, and isolating which product features or usage thresholds correlate with account growth."
+            },
+        ],
     },
     {
         "id": 236,
@@ -48,6 +78,16 @@ POSTS = [
         "category": "ARR Snowballs",
         "date": "January 12, 2026",
         "date_iso": "2026-01-12",
+        "faq": [
+            {
+                "q": "How do you prevent churn in high-value SaaS accounts?",
+                "a": "Prevent churn by monitoring leading indicators like product usage decline, support ticket spikes, and contract renewal timelines. ARR snowball analysis surfaces at-risk accounts before renewal dates, enabling proactive intervention."
+            },
+            {
+                "q": "What is the impact of churn on ARR growth?",
+                "a": "Churn directly erodes the ARR base. Even small increases in churn rate can negate new business and expansion revenue, making net revenue retention fall below 100% and compounding revenue loss over time."
+            },
+        ],
     },
     {
         "id": 227,
@@ -56,6 +96,16 @@ POSTS = [
         "category": "ARR Snowballs",
         "date": "January 12, 2026",
         "date_iso": "2026-01-12",
+        "faq": [
+            {
+                "q": "What is an ARR snowball?",
+                "a": "An ARR snowball is a framework for tracking how Annual Recurring Revenue grows or shrinks over time by decomposing changes into new business, expansion, contraction, and churn — showing whether revenue momentum is accelerating or decelerating."
+            },
+            {
+                "q": "How is ARR snowball different from a standard ARR report?",
+                "a": "A standard ARR report shows a point-in-time snapshot. The ARR snowball shows the flow — how each component (new, expansion, contraction, churn) contributes to period-over-period ARR change, revealing the dynamics behind the number."
+            },
+        ],
     },
 ]
 
@@ -101,10 +151,36 @@ def fetch_post_content(post_id):
         return None
 
 
+def build_faq_jsonld(faq_items):
+    """Generate FAQ JSON-LD from a list of Q&A dicts."""
+    if not faq_items:
+        return ""
+    faq_schema = {
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": item["q"],
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": item["a"]
+                }
+            }
+            for item in faq_items
+        ]
+    }
+    # Return with leading comma for @graph array placement
+    return ",\n    " + json.dumps(faq_schema, indent=6)
+
+
 def build_post(template, post_meta, content):
     """Replace template placeholders with post data."""
     # Strip Gutenberg comments from content
     clean_content = strip_gutenberg_comments(content)
+
+    # Build FAQ JSON-LD if present
+    faq_items = post_meta.get("faq", [])
+    faq_json = build_faq_jsonld(faq_items)
 
     output = template
     output = output.replace("{{TITLE}}", post_meta["title"])
@@ -112,6 +188,7 @@ def build_post(template, post_meta, content):
     output = output.replace("{{CATEGORY}}", post_meta["category"])
     output = output.replace("{{DATE}}", post_meta["date"])
     output = output.replace("{{DATE_ISO}}", post_meta["date_iso"])
+    output = output.replace("{{FAQ_JSON}}", faq_json)
     output = output.replace("{{CONTENT}}", clean_content)
 
     return output

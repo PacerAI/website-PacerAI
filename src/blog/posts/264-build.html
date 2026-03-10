@@ -549,27 +549,53 @@ html, body, .wp-site-blocks {
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": "Using AI to Enable RevOps (Without Breaking Your GTM)",
-  "datePublished": "2026-01-20",
-  "author": {
-    "@type": "Organization",
-    "name": "Pacer AI",
-    "url": "https://getpacerai.com"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Pacer AI",
-    "url": "https://getpacerai.com",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://getpacerai.com/wp-content/uploads/2025/04/PacerAI_Logo_Horizontal_Full-Color-scaled.webp"
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "Using AI to Enable RevOps (Without Breaking Your GTM)",
+      "datePublished": "2026-01-20",
+      "author": {
+        "@type": "Organization",
+        "name": "Pacer AI",
+        "url": "https://getpacerai.com"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Pacer AI",
+        "url": "https://getpacerai.com",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://getpacerai.com/wp-content/uploads/2025/04/PacerAI_Logo_Horizontal_Full-Color-scaled.webp"
+        }
+      },
+      "articleSection": "RevOps",
+      "mainEntityOfPage": {
+        "@type": "WebPage"
+      }
     }
-  },
-  "articleSection": "RevOps",
-  "mainEntityOfPage": {
-    "@type": "WebPage"
-  }
+    ,
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+            {
+                  "@type": "Question",
+                  "name": "How can AI improve revenue operations?",
+                  "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "AI improves RevOps by automating data unification across CRM, billing, and product usage systems, enabling real-time ARR analysis, anomaly detection, and predictive churn modeling without replacing existing GTM workflows."
+                  }
+            },
+            {
+                  "@type": "Question",
+                  "name": "What are the risks of using AI in RevOps?",
+                  "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "The main risks include over-automating before data foundations are solid, breaking existing GTM workflows by forcing new processes, and relying on AI outputs without validating against source-of-truth financial data."
+                  }
+            }
+      ]
+}
+  ]
 }
 </script>
 

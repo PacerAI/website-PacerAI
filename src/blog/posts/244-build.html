@@ -549,27 +549,53 @@ html, body, .wp-site-blocks {
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": "ARR Snowball Analysis: Find Your Expansion Drivers",
-  "datePublished": "2026-01-12",
-  "author": {
-    "@type": "Organization",
-    "name": "Pacer AI",
-    "url": "https://getpacerai.com"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Pacer AI",
-    "url": "https://getpacerai.com",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://getpacerai.com/wp-content/uploads/2025/04/PacerAI_Logo_Horizontal_Full-Color-scaled.webp"
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "ARR Snowball Analysis: Find Your Expansion Drivers",
+      "datePublished": "2026-01-12",
+      "author": {
+        "@type": "Organization",
+        "name": "Pacer AI",
+        "url": "https://getpacerai.com"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Pacer AI",
+        "url": "https://getpacerai.com",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://getpacerai.com/wp-content/uploads/2025/04/PacerAI_Logo_Horizontal_Full-Color-scaled.webp"
+        }
+      },
+      "articleSection": "ARR Snowballs",
+      "mainEntityOfPage": {
+        "@type": "WebPage"
+      }
     }
-  },
-  "articleSection": "ARR Snowballs",
-  "mainEntityOfPage": {
-    "@type": "WebPage"
-  }
+    ,
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+            {
+                  "@type": "Question",
+                  "name": "What is ARR snowball analysis?",
+                  "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "ARR snowball analysis tracks how Annual Recurring Revenue compounds over time by breaking it into components \u2014 new business, expansion, contraction, and churn \u2014 to identify which growth levers are strongest and where revenue leakage occurs."
+                  }
+            },
+            {
+                  "@type": "Question",
+                  "name": "How do you find expansion revenue drivers?",
+                  "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Identify expansion drivers by analyzing upsell and cross-sell patterns across customer segments, tracking net revenue retention by cohort, and isolating which product features or usage thresholds correlate with account growth."
+                  }
+            }
+      ]
+}
+  ]
 }
 </script>
 

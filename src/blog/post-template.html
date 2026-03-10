@@ -549,27 +549,32 @@ html, body, .wp-site-blocks {
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": "{{TITLE}}",
-  "datePublished": "{{DATE_ISO}}",
-  "author": {
-    "@type": "Organization",
-    "name": "Pacer AI",
-    "url": "https://getpacerai.com"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Pacer AI",
-    "url": "https://getpacerai.com",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://getpacerai.com/wp-content/uploads/2025/04/PacerAI_Logo_Horizontal_Full-Color-scaled.webp"
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "{{TITLE}}",
+      "datePublished": "{{DATE_ISO}}",
+      "author": {
+        "@type": "Organization",
+        "name": "Pacer AI",
+        "url": "https://getpacerai.com"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Pacer AI",
+        "url": "https://getpacerai.com",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://getpacerai.com/wp-content/uploads/2025/04/PacerAI_Logo_Horizontal_Full-Color-scaled.webp"
+        }
+      },
+      "articleSection": "{{CATEGORY}}",
+      "mainEntityOfPage": {
+        "@type": "WebPage"
+      }
     }
-  },
-  "articleSection": "{{CATEGORY}}",
-  "mainEntityOfPage": {
-    "@type": "WebPage"
-  }
+    {{FAQ_JSON}}
+  ]
 }
 </script>
 

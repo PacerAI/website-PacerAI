@@ -549,27 +549,53 @@ html, body, .wp-site-blocks {
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": "What Is an ARR Snowball? Understanding Revenue Growth",
-  "datePublished": "2026-01-12",
-  "author": {
-    "@type": "Organization",
-    "name": "Pacer AI",
-    "url": "https://getpacerai.com"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Pacer AI",
-    "url": "https://getpacerai.com",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://getpacerai.com/wp-content/uploads/2025/04/PacerAI_Logo_Horizontal_Full-Color-scaled.webp"
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "What Is an ARR Snowball? Understanding Revenue Growth",
+      "datePublished": "2026-01-12",
+      "author": {
+        "@type": "Organization",
+        "name": "Pacer AI",
+        "url": "https://getpacerai.com"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Pacer AI",
+        "url": "https://getpacerai.com",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://getpacerai.com/wp-content/uploads/2025/04/PacerAI_Logo_Horizontal_Full-Color-scaled.webp"
+        }
+      },
+      "articleSection": "ARR Snowballs",
+      "mainEntityOfPage": {
+        "@type": "WebPage"
+      }
     }
-  },
-  "articleSection": "ARR Snowballs",
-  "mainEntityOfPage": {
-    "@type": "WebPage"
-  }
+    ,
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+            {
+                  "@type": "Question",
+                  "name": "What is an ARR snowball?",
+                  "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "An ARR snowball is a framework for tracking how Annual Recurring Revenue grows or shrinks over time by decomposing changes into new business, expansion, contraction, and churn \u2014 showing whether revenue momentum is accelerating or decelerating."
+                  }
+            },
+            {
+                  "@type": "Question",
+                  "name": "How is ARR snowball different from a standard ARR report?",
+                  "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "A standard ARR report shows a point-in-time snapshot. The ARR snowball shows the flow \u2014 how each component (new, expansion, contraction, churn) contributes to period-over-period ARR change, revealing the dynamics behind the number."
+                  }
+            }
+      ]
+}
+  ]
 }
 </script>
 

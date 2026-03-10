@@ -549,27 +549,53 @@ html, body, .wp-site-blocks {
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": "Prevent Churn in High-Value Accounts with ARR Snowball",
-  "datePublished": "2026-01-12",
-  "author": {
-    "@type": "Organization",
-    "name": "Pacer AI",
-    "url": "https://getpacerai.com"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Pacer AI",
-    "url": "https://getpacerai.com",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://getpacerai.com/wp-content/uploads/2025/04/PacerAI_Logo_Horizontal_Full-Color-scaled.webp"
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "Prevent Churn in High-Value Accounts with ARR Snowball",
+      "datePublished": "2026-01-12",
+      "author": {
+        "@type": "Organization",
+        "name": "Pacer AI",
+        "url": "https://getpacerai.com"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Pacer AI",
+        "url": "https://getpacerai.com",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://getpacerai.com/wp-content/uploads/2025/04/PacerAI_Logo_Horizontal_Full-Color-scaled.webp"
+        }
+      },
+      "articleSection": "ARR Snowballs",
+      "mainEntityOfPage": {
+        "@type": "WebPage"
+      }
     }
-  },
-  "articleSection": "ARR Snowballs",
-  "mainEntityOfPage": {
-    "@type": "WebPage"
-  }
+    ,
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+            {
+                  "@type": "Question",
+                  "name": "How do you prevent churn in high-value SaaS accounts?",
+                  "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Prevent churn by monitoring leading indicators like product usage decline, support ticket spikes, and contract renewal timelines. ARR snowball analysis surfaces at-risk accounts before renewal dates, enabling proactive intervention."
+                  }
+            },
+            {
+                  "@type": "Question",
+                  "name": "What is the impact of churn on ARR growth?",
+                  "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Churn directly erodes the ARR base. Even small increases in churn rate can negate new business and expansion revenue, making net revenue retention fall below 100% and compounding revenue loss over time."
+                  }
+            }
+      ]
+}
+  ]
 }
 </script>
 

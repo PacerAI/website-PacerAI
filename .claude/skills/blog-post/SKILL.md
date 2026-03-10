@@ -62,7 +62,19 @@ If the user provides a topic, write the blog post content as semantic HTML:
 - **Target audience**: PE operating partners, CFOs, RevOps leaders at $50M–$1B ARR SaaS
 - **Tone**: Authoritative, data-driven, no fluff. Senior analyst voice.
 - **Avoid**: "Get started free", "game-changer", "revolutionary", emojis, exclamation marks
+- **Avoid overly technical jargon**: Use plain language the audience actually uses. The audience is executives, not engineers.
+  - Say "rule-based calculations" not "deterministic classification engine"
+  - Say "purpose-built data pipelines" not "production-grade pipelines"
+  - Say "cross-system customer matching" not "entity resolution"
+  - Say "analytics database" or "data pipeline" not "persistent state" or "temporal logic"
+  - Say "messy data" or "every company's custom way of doing things" not "source system ambiguity"
+  - Emphasize that every company has its own nuances to ARR definitions — what counts as expansion, when a downgrade becomes churn, etc. Often internal teams can't agree on these definitions, which is where an expert is needed before any tool can automate.
 - **Word count**: 1,200–2,000 words for standard posts
+
+**Linking requirements (MANDATORY):**
+- **External expert sources**: Include 3-4 links to credible third-party sources (e.g., Bessemer, SaaS Capital, OpenView, Gartner, Forrester, academic papers). These build authority and AEO trust signals.
+- **Internal blog post links**: Link to 2-5 existing Pacer AI blog posts where relevant. Check the `POSTS` list in `build-posts.py` for current posts and their slugs.
+- **Internal page links**: Link to relevant Pacer AI pages — especially `/solutions/arr-snowball-board-reporting/`, `/solutions/customer-data-cube/`, and `/platform/overview/` where the content naturally references these capabilities.
 
 Save to: `src/blog/posts/content-{slug}.html` (use a short slug, e.g., `content-nrr-guide.html`)
 

@@ -18,6 +18,24 @@ OUTPUT_DIR = f"{REPO}/src/blog/posts"
 # Blog post metadata
 POSTS = [
     {
+        "id": 441,
+        "title": "Why LLMs Can't Build Your ARR Snowball from Operational Data",
+        "title_short": "LLM Limitations",
+        "category": "ARR Snowballs",
+        "date": "March 10, 2026",
+        "date_iso": "2026-03-10",
+        "faq": [
+            {
+                "q": "Can LLMs build ARR snowball reports from CRM or billing data?",
+                "a": "No. LLMs predict text rather than perform rule-based calculations. ARR snowball construction requires consistent period-over-period classification of every customer's revenue movements, cross-system customer matching, and three-way reconciliation — capabilities that require purpose-built data pipelines, not language models."
+            },
+            {
+                "q": "What is the difference between bookings, billings, and revenue for ARR analysis?",
+                "a": "Bookings (from CRMs like Salesforce) capture deal values at close. Billings (from Stripe or Zuora) capture invoice amounts as subscriptions are charged. Revenue (from ERPs like NetSuite) captures recognized revenue under ASC 606. Each provides a different view of the same customer relationship, and none alone is sufficient for accurate ARR snowball construction."
+            },
+        ],
+    },
+    {
         "id": 288,
         "title": "Why ARR Waterfall Models Matter for SaaS Growth",
         "title_short": "ARR Waterfall Models",

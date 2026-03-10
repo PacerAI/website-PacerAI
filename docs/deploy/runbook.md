@@ -1,139 +1,160 @@
-# Deploy Runbook — Homepage v2
+# Deploy Runbook — getpacerai.com
 
-**READ THIS BEFORE TOUCHING THE LIVE SITE.**
+**READ THIS BEFORE DEPLOYING TO THE LIVE SITE.**
 
-This runbook is executed by Claude Code. Every step must be completed in order. Do not skip steps.
+This runbook is executed by Claude Code. Every step must be completed in order.
 
 ---
 
-## Two Deploy Methods
+## Deploy Method: REST API via Python
 
-### Method A: AI Engine MCP (Preferred for reads and small edits)
-Claude Code connects to WordPress via the AI Engine MCP plugin. No env vars needed.
+All deploys use the WordPress REST API with Basic Auth. The `requests` library is preferred.
 
-```
-Tools available:
-  wp_get_post(ID=25)           — read page content
-  wp_update_post(ID=25, ...)   — full content replacement
-  wp_alter_post(ID=25, ...)    — search-and-replace (caution: mangles newlines)
-  wp_get_option(key=...)       — read WP settings
-  wp_get_post_snapshot(ID=25)  — full page data in one call
-```
-
-**Known limitation:** `wp_alter_post` with `\n` in replacement strings stores literal `n` instead of newlines. Use Method B for full content pushes.
-
-### Method B: REST API via Python (Preferred for full content deploys)
-Requires shell environment variables:
+### Required Environment Variables
 
 ```bash
+# Set in ~/.zshrc
 export WP_BASE_URL=https://getpacerai.com
 export WP_USER=willsullivan5e7f50183a
 export WP_APP_PASSWORD=[app password from WP admin]
 ```
 
-Verify: `echo $WP_BASE_URL && echo $WP_USER && echo ${WP_APP_PASSWORD:0:4}...`
+Verify: `source ~/.zshrc && echo $WP_BASE_URL && echo $WP_USER && echo ${WP_APP_PASSWORD:0:4}...`
+
+---
+
+## Page Registry
+
+Always reference `CLAUDE.md` for the authoritative page registry. Key pages:
+
+| Page | WP ID | Source File |
+|------|-------|-------------|
+| Home | 25 | `src/homepage/index-build.html` |
+| Blog | 230 | `src/blog/index-build.html` |
+| Platform Overview | 371 | `src/platform/overview.html` |
+| ARR Snowball | 372 | `src/solutions/arr-snowball.html` |
+| Customer Data Cube | 373 | `src/solutions/customer-data-cube.html` |
+| About | 374 | `src/company/about.html` |
+| Contact | 375 | `src/company/contact.html` |
+
+Parent placeholder pages (no content): Platform (362), Solutions (364), Company (366).
 
 ---
 
 ## Pre-Flight Checks
 
-### 1. Verify homepage page ID
-```python
-# Via MCP:
-wp_get_option(key="page_on_front")  # Should return "25"
-wp_get_option(key="show_on_front")  # Should return "page"
-```
+### 1. Verify environment
 ```bash
-# Via REST API:
-curl -s -u "$WP_USER:$WP_APP_PASSWORD" \
-  "$WP_BASE_URL/wp-json/wp/v2/settings" \
-  | python3 -c "import sys,json; d=json.load(sys.stdin); print('Homepage ID:', d.get('page_on_front'))"
-```
-If `page_on_front` is 0 or empty, **stop and alert Will**.
-
-### 2. Backup current homepage
-
-**Via MCP:**
-```
-wp_get_post(ID=25)
-# Save result to docs/review/pre-deploy-backup-[DATE].json
+source ~/.zshrc
+echo $WP_BASE_URL && echo $WP_USER && echo ${WP_APP_PASSWORD:0:4}...
 ```
 
-**Via REST API:**
+### 2. Backup current page (for major changes)
 ```bash
+source ~/.zshrc
 DATE=$(date +%Y%m%d-%H%M)
 curl -s -u "$WP_USER:$WP_APP_PASSWORD" \
-  "$WP_BASE_URL/wp-json/wp/v2/pages/25" \
+  "$WP_BASE_URL/wp-json/wp/v2/pages/25?context=edit" \
   > docs/review/pre-deploy-backup-$DATE.json
 ```
-Confirm the file is non-empty before proceeding.
 
 ### 3. Confirm review checklist is complete
 Read `docs/review/checklist.md`. Critical items must be checked.
 
 ---
 
-## Deploy
+## Deploy: Single Page
 
-### 4. Prepare content payload
-The build file is `src/homepage/index-build.html`. It contains `<style>`, `<div id="pacerai-homepage">`, and `<script>` — no `<html>/<head>/<body>` wrappers.
-
-Wrap in Gutenberg HTML block:
-```
-<!-- wp:html -->[CONTENT]<!-- /wp:html -->
-```
-
-### 5. Push to WordPress
-
-**Via Python (recommended for full pushes):**
 ```python
-import json, urllib.request, os, base64
+import requests, os
 
-with open('src/homepage/index-build.html') as f:
-    content = f.read()
+base_url = os.environ['WP_BASE_URL']
+auth = (os.environ['WP_USER'], os.environ['WP_APP_PASSWORD'])
 
-wrapped = "<!-- wp:html -->" + content + "<!-- /wp:html -->"
-url = os.environ['WP_BASE_URL'] + '/wp-json/wp/v2/pages/25'
-data = json.dumps({'content': wrapped}).encode('utf-8')
-creds = base64.b64encode(
-    f"{os.environ['WP_USER']}:{os.environ['WP_APP_PASSWORD']}".encode()
-).decode()
+with open('src/platform/overview.html') as f:
+    html = f.read()
 
-req = urllib.request.Request(url, data=data, method='POST')
-req.add_header('Content-Type', 'application/json')
-req.add_header('Authorization', f'Basic {creds}')
+content = f"<!-- wp:html -->{html}<!-- /wp:html -->"
+resp = requests.post(f"{base_url}/wp-json/wp/v2/pages/371", json={"content": content}, auth=auth)
 
-resp = urllib.request.urlopen(req)
-result = json.loads(resp.read())
-print('Status:', result.get('status'), '| ID:', result.get('id'))
+if resp.status_code == 200:
+    print(f"OK — {resp.json()['link']}")
+else:
+    print(f"FAILED — HTTP {resp.status_code}: {resp.text[:300]}")
 ```
 
-**Via MCP (for surgical edits only):**
-```
-wp_alter_post(ID=25, field="post_content", search="old text", replace="new text")
+## Deploy: All Pages (Batch)
+
+Use this when shared elements (nav, footer, base CSS) have changed.
+
+```python
+import requests, os
+
+base_url = os.environ['WP_BASE_URL']
+auth = (os.environ['WP_USER'], os.environ['WP_APP_PASSWORD'])
+api = f"{base_url}/wp-json/wp/v2/pages"
+src = "src"  # relative to repo root
+
+pages = [
+    {"id": 25,  "title": "Home",               "file": f"{src}/homepage/index-build.html"},
+    {"id": 230, "title": "Blog",               "file": f"{src}/blog/index-build.html"},
+    {"id": 371, "title": "Platform Overview",   "file": f"{src}/platform/overview.html"},
+    {"id": 372, "title": "ARR Snowball",        "file": f"{src}/solutions/arr-snowball.html"},
+    {"id": 373, "title": "Customer Data Cube",  "file": f"{src}/solutions/customer-data-cube.html"},
+    {"id": 374, "title": "About",               "file": f"{src}/company/about.html"},
+    {"id": 375, "title": "Contact",             "file": f"{src}/company/contact.html"},
+]
+
+for p in pages:
+    with open(p['file']) as f:
+        html = f.read()
+    content = f"<!-- wp:html -->{html}<!-- /wp:html -->"
+    resp = requests.post(f"{api}/{p['id']}", json={"content": content}, auth=auth)
+    status = "OK" if resp.status_code == 200 else f"FAIL ({resp.status_code})"
+    print(f"  {status} — {p['title']} (ID {p['id']})")
 ```
 
-### 6. Verify deploy
+## Deploy: New Page (First Time)
 
-**Via MCP:**
+```python
+# 1. Create the HTML source file in src/
+# 2. Create the WordPress page:
+resp = requests.post(f"{base_url}/wp-json/wp/v2/pages", json={
+    "title": "Page Title",
+    "slug": "page-slug",
+    "parent": 364,  # Parent page ID (Platform=362, Solutions=364, Company=366)
+    "status": "publish",
+    "content": f"<!-- wp:html -->{html}<!-- /wp:html -->"
+}, auth=auth)
+new_id = resp.json()['id']
+print(f"Created page ID {new_id} at {resp.json()['link']}")
+# 3. IMPORTANT: Update CLAUDE.md page registry with the new ID
 ```
-wp_get_post(ID=25)
-# Check rendered content for expected elements
-```
-
-**Manual:**
-- Open https://getpacerai.com in browser
-- Confirm hero headline, nav, footer render correctly
-- Test on mobile viewport
 
 ---
 
-## Post-Deploy
+## Post-Deploy Verification
 
-### 7. Log the deploy
-Append to `docs/document/changelog.md` with date, changes, content size, and backup reference.
+```bash
+# Verify all pages return HTTP 200
+source ~/.zshrc
+for url in \
+  "https://getpacerai.com/" \
+  "https://getpacerai.com/blog/" \
+  "https://getpacerai.com/platform/overview/" \
+  "https://getpacerai.com/solutions/arr-snowball-board-reporting/" \
+  "https://getpacerai.com/solutions/customer-data-cube/" \
+  "https://getpacerai.com/company/about/" \
+  "https://getpacerai.com/company/contact/"; do
+  code=$(curl -s -o /dev/null -w "%{http_code}" "$url")
+  echo "$code  $url"
+done
+```
 
-### 8. Lighthouse audit (optional)
+### Log the deploy
+Append to `docs/document/changelog.md` with date, page IDs, changes, and backup reference.
+
+### Lighthouse audit (optional)
 ```bash
 npx lighthouse https://getpacerai.com --output=json --output-path=docs/review/lighthouse-$(date +%Y%m%d).json
 ```
@@ -142,49 +163,42 @@ npx lighthouse https://getpacerai.com --output=json --output-path=docs/review/li
 
 ## Rollback Procedure
 
-If anything is wrong after deploy, restore from backup:
-
+Restore from backup:
 ```python
-import json
+import json, requests, os
 
 backup = json.load(open('docs/review/pre-deploy-backup-[DATE].json'))
-# For MCP backups (array format):
-content = json.loads(backup[0]['text'])['post_content']
-# For REST API backups (object format):
 content = backup['content']['raw']
 
-# Then push via REST API Method B
+resp = requests.post(
+    f"{os.environ['WP_BASE_URL']}/wp-json/wp/v2/pages/25",
+    json={"content": content},
+    auth=(os.environ['WP_USER'], os.environ['WP_APP_PASSWORD'])
+)
+print(f"Rollback {'OK' if resp.status_code == 200 else 'FAILED'}")
 ```
 
 ---
 
-## AI Engine MCP Reference
+## Content Format
 
-The AI Engine WordPress plugin provides an MCP server that Claude Code connects to directly. Configuration is in Claude Code's MCP settings (not in this repo).
+Every page source file follows this structure:
 
-### Available Tools
+```html
+<style>
+  /* TT4 overrides: hide theme chrome, force dark bg, remove constraints */
+  /* .wp-block-post-title, .wp-block-spacer { display: none !important; } */
+  /* CSS variables, component styles, responsive breakpoints */
+</style>
+<div id="pacerai-homepage">
+  <nav><!-- Shared nav --></nav>
+  <!-- Page-specific content -->
+  <footer><!-- Shared footer --></footer>
+</div>
+<script>/* Mobile nav JS */</script>
+```
 
-| Tool | Purpose | Notes |
-|------|---------|-------|
-| `wp_get_post` | Read post by ID | Returns title, content, status, dates |
-| `wp_get_post_snapshot` | Full post data | Includes meta, terms, thumbnail, author |
-| `wp_update_post` | Update post fields | Can set post_content, post_title, post_status |
-| `wp_alter_post` | Search-replace in content | Supports regex. **Caution: mangles newlines** |
-| `wp_get_option` | Read WP option | page_on_front, show_on_front, etc. |
-| `wp_update_option` | Write WP option | Use carefully |
-| `wp_list_plugins` | List installed plugins | Check active/inactive status |
-| `wp_upload_media` | Upload image/file | Returns media ID and URL |
-| `wp_get_media` | Read media item | Get URL, dimensions, alt text |
-| `wp_count_posts` | Count posts by type/status | Quick audit tool |
-
-### When to Use MCP vs REST API
-
-| Scenario | Use |
-|----------|-----|
-| Read current page content | MCP `wp_get_post` |
-| Check WP settings | MCP `wp_get_option` |
-| Small text change (no newlines) | MCP `wp_alter_post` |
-| Full content deploy | REST API (Python) |
-| Upload new image | MCP `wp_upload_media` |
-| Plugin audit | MCP `wp_list_plugins` |
-| Backup before deploy | Either (MCP is faster) |
+- No `<html>`, `<head>`, or `<body>` tags — WordPress manages the document shell
+- Content is wrapped in `<!-- wp:html -->...<!-- /wp:html -->` during deploy
+- Google Fonts loaded by WordPress — no `<link>` tags needed
+- All CSS scoped under `#pacerai-homepage`

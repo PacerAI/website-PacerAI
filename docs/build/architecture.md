@@ -1,7 +1,7 @@
-# Architecture — Homepage v2
+# Architecture — getpacerai.com
 
-**Date:** March 2026 (updated 2026-03-09)
-**Approach:** Dual-channel WordPress deployment — REST API (curl/Python) + AI Engine MCP
+**Date:** March 2026 (updated 2026-03-10)
+**Approach:** Multi-page WordPress deployment via REST API
 
 ---
 
@@ -10,90 +10,40 @@
 ```
 Claude Code (local)
     │
-    ├── reads  → docs/design/pacerai-homepage_by_Claude_030526_1522.html
-    ├── writes → src/homepage/index-build.html  (working copy)
+    ├── reads  → docs/design/, docs/plan/site-tree-and-build-prompts.md
+    ├── writes → src/{section}/{page}.html  (source files)
     │
-    ├── deploys via WordPress REST API (curl / Python urllib)
-    │       │
-    │       └── POST /wp-json/wp/v2/pages/25
-    │
-    └── deploys via AI Engine MCP (Claude Code tool)
+    └── deploys via WordPress REST API (Python requests)
             │
-            ├── wp_get_post       — read page content
-            ├── wp_update_post    — full content replacement
-            ├── wp_alter_post     — surgical search-and-replace
-            ├── wp_get_option     — read WP settings (show_on_front, etc.)
-            ├── wp_upload_media   — upload images
-            └── wp_get_post_snapshot — full page data in one call
+            └── POST /wp-json/wp/v2/pages/{ID}
                     │
                     └── getpacerai.com (WordPress.com hosted)
-                            ├── Theme: Twenty Twenty-Four (default)
-                            ├── Yoast SEO (active — manages <head> meta)
-                            └── AI Engine plugin (provides MCP server)
+                            ├── Theme: Twenty Twenty-Four (default, overridden)
+                            ├── Yoast SEO (manages <head> meta)
+                            └── Google Site Kit (GA4 + Search Console)
 ```
 
 ---
 
-## Two Deploy Methods
+## Page Architecture
 
-### Method 1: REST API (curl / Python)
-Used for full content pushes. Requires shell env vars.
-
-```bash
-export WP_BASE_URL=https://getpacerai.com
-export WP_USER=willsullivan5e7f50183a
-export WP_APP_PASSWORD=[app password]
-```
-
-Deploy script (Python):
-```python
-content = open('src/homepage/index-build.html').read()
-wrapped = "<!-- wp:html -->" + content + "<!-- /wp:html -->"
-# POST to /wp-json/wp/v2/pages/25 with Basic Auth
-```
-
-### Method 2: AI Engine MCP (Claude Code tools)
-Used for reads, surgical edits, and metadata operations. No env vars needed — credentials managed by MCP server config.
-
-| Tool | Use Case |
-|------|----------|
-| `wp_get_post` | Read page content/status |
-| `wp_update_post` | Full content replacement |
-| `wp_alter_post` | Search-and-replace within content (caution: can mangle newlines in replacements) |
-| `wp_get_option` | Check `page_on_front`, `show_on_front` settings |
-| `wp_get_post_snapshot` | Full page data + meta + terms in one call |
-| `wp_list_plugins` | Audit active plugins |
-
-**Known MCP limitation:** `wp_alter_post` with `\n` in replacement strings stores literal `n` characters instead of newlines. Use REST API for full content pushes.
-
----
-
-## Page Structure
-
-The homepage (page ID 25) is a single `<!-- wp:html -->` Gutenberg block containing:
+Every page is a single `<!-- wp:html -->` Gutenberg block containing:
 
 ```
 <style>
-  ├── TT4 theme overrides (hide header/footer, dark bg, full-width)
+  ├── TT4 theme overrides (hide header/footer/title, dark bg, full-width)
   ├── CSS variables (:root)
   ├── Component styles (nav, hero, sections, footer)
+  ├── Page-specific styles
   ├── Mobile responsive (@media max-width: 768px)
   └── Tablet responsive (@media max-width: 1024px)
 </style>
 
 <div id="pacerai-homepage">
-  ├── <nav>           — Fixed top nav with logo, dropdown menus, CTA buttons
-  │                     Mobile: hamburger menu with full-screen overlay
-  ├── .hero           — Hero section with headline, CTAs, stats, badges
-  ├── .preview-section — Dashboard preview (ARR waterfall mockup)
-  ├── .logo-strip     — Social proof / partner logos
-  ├── .section (use cases) — Use case menu strip + card grid
-  ├── .how-section    — 4-step "How It Works"
-  ├── .section (pillars) — 3-column platform pillars
-  ├── .empathy-section — Problem/solution with expert card
-  ├── .quote-section  — Testimonial
-  ├── .cta-section    — Bottom CTA
-  └── <footer>        — 5-column footer with legal bar
+  ├── <nav>              — Fixed top nav with logo, dropdown menus, CTA buttons
+  │                        Mobile: hamburger menu with full-screen overlay
+  ├── [page content]     — Page-specific sections
+  └── <footer>           — 5-column footer with legal bar
 </div>
 
 <script>
@@ -101,62 +51,167 @@ The homepage (page ID 25) is a single `<!-- wp:html -->` Gutenberg block contain
 </script>
 ```
 
-### Header (Nav)
-- Fixed position, semi-transparent background (desktop), solid dark (mobile)
-- Desktop: logo + 6 nav items with hover dropdowns + Log In / Request Demo
-- Mobile: logo + Request Demo + hamburger → full-screen slide-down menu
-- Dropdowns use CSS `:hover` with invisible `::before` bridge to prevent hover gap
-- Mobile dropdowns expand inline on tap via JS `mobile-expanded` class
+### Shared Elements (duplicated in every page file)
 
-### Footer
-- 5-column grid: Brand, Platform, Use Cases, Comparisons, Company
-- Bottom bar: copyright + legal links
-- Mobile: 2-column grid, brand spans full width
+| Element | Description |
+|---------|-------------|
+| TT4 override CSS | Hides theme chrome, forces dark bg, removes container constraints, hides `.wp-block-post-title` and `.wp-block-spacer` |
+| CSS variables | Full brand color system (`:root` block) |
+| Nav HTML | Fixed nav with dropdowns, mobile hamburger, SVG logo |
+| Footer HTML | 5-column grid (Brand, Platform, Use Cases, Comparisons, Company) |
+| Nav JS | Mobile hamburger toggle + dropdown expand/collapse |
+| Responsive CSS | Breakpoints at 768px (mobile) and 1024px (tablet) |
+
+**Important:** Changes to shared elements must be applied to ALL page files and redeployed.
+
+### Page-Specific Content by File
+
+| File | Key Sections |
+|------|-------------|
+| `homepage/index-build.html` | Hero, dashboard preview, logo strip, use cases (9 items), how-it-works (4 steps), platform pillars, empathy section, testimonial, CTA |
+| `platform/overview.html` | Hero, architecture flow diagram, 3 capability pillars, integration grid, CTA |
+| `solutions/arr-snowball.html` | AEO definition, problem grid, Pacer solution, ARR components breakdown, dashboard mockup, personas, testimonial, FAQ (JSON-LD schema), CTA |
+| `solutions/customer-data-cube.html` | AEO definition, problem grid, 6-dimension grid, use cases, dashboard mockup, FAQ (JSON-LD schema), CTA |
+| `company/about.html` | Mission card, old-way/new-way contrast grid, founder section, 4 values cards, tech partners strip, CTA |
+| `company/contact.html` | 2-column layout: contact form + sidebar cards (Calendly, email, partnerships), CTA |
+| `blog/index-build.html` | Blog index with featured post + card grid, newsletter CTA |
 
 ---
 
 ## Theme: Twenty Twenty-Four
 
-Switched from Beaver Builder (removed 2026-03-09) to WordPress default theme.
+WordPress default theme — fully overridden by inline CSS in each page.
 
 **TT4 overrides in content CSS:**
-- Hide theme header/footer (`.wp-site-blocks > header/footer`)
-- Force dark background on `html, body, .wp-site-blocks` (#080E1C)
-- Remove content container constraints (`.is-layout-constrained`, `.has-global-padding`)
-- Mobile: disable `backdrop-filter` on nav (it creates a containing block that traps fixed-position children)
+```css
+/* Hide theme chrome */
+.wp-site-blocks > header, .wp-site-blocks > footer,
+header.wp-block-template-part, footer.wp-block-template-part,
+.wp-block-template-part:first-child { display: none !important; }
 
-**Why TT4:** Minimal, respects static front page setting, WordPress core team maintained. Our content is fully self-contained with inline CSS — theme only provides the shell.
+/* Hide WordPress page title and spacer (creates gap on non-homepage pages) */
+.wp-block-post-title, .wp-block-spacer { display: none !important; }
+
+/* Force dark background */
+html, body, .wp-site-blocks { background: #080E1C !important; }
+
+/* Remove content container constraints */
+.wp-site-blocks, .wp-site-blocks > main,
+.is-layout-constrained, .has-global-padding, .entry-content {
+  max-width: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+```
+
+**Why TT4:** Minimal, respects static front page setting, WordPress core team maintained. Our content is fully self-contained with inline CSS — theme only provides the document shell.
 
 ---
 
-## API Endpoints Used
+## Deploy Method: REST API
+
+All deploys use the WordPress REST API with HTTP Basic Auth.
+
+```python
+import requests, os
+
+base_url = os.environ['WP_BASE_URL']
+auth = (os.environ['WP_USER'], os.environ['WP_APP_PASSWORD'])
+
+with open('src/platform/overview.html') as f:
+    html = f.read()
+
+content = f"<!-- wp:html -->{html}<!-- /wp:html -->"
+resp = requests.post(f"{base_url}/wp-json/wp/v2/pages/371", json={"content": content}, auth=auth)
+```
+
+### API Endpoints Used
 
 | Method | Endpoint | Purpose |
 |---|---|---|
-| GET | `/wp-json/wp/v2/settings` | Get `page_on_front` ID |
-| GET | `/wp-json/wp/v2/pages/25` | Read current homepage content |
-| POST | `/wp-json/wp/v2/pages/25` | Update homepage content |
-| GET | `/wp-json/wp/v2/pages` | List all pages (audit) |
+| GET | `/wp-json/wp/v2/pages?per_page=100` | List all pages (audit) |
+| GET | `/wp-json/wp/v2/pages/{ID}` | Read page content |
+| GET | `/wp-json/wp/v2/pages/{ID}?context=edit` | Read raw content (for backups) |
+| POST | `/wp-json/wp/v2/pages/{ID}` | Update existing page |
+| POST | `/wp-json/wp/v2/pages` | Create new page |
+| GET | `/wp-json/wp/v2/settings` | Check `page_on_front` setting |
+
+### Authentication
+- HTTP Basic Auth with Application Password
+- Variables: `WP_USER`, `WP_APP_PASSWORD`, `WP_BASE_URL` (set in `~/.zshrc`)
+- Key name in WP admin: `claude-code`
 
 ---
 
-## Authentication
+## WordPress Page Hierarchy
 
-- **REST API:** HTTP Basic Auth with Application Password
-  - Variables: `WP_USER`, `WP_APP_PASSWORD`, `WP_BASE_URL`
-  - Key name in WP admin: `claude-code`
-- **MCP:** Credentials managed by AI Engine plugin configuration
+```
+getpacerai.com/
+├── / (Home)                                    → ID 25
+├── /blog/                                      → ID 230
+├── /platform/                                  → ID 362 (parent placeholder)
+│   └── /platform/overview/                     → ID 371
+├── /solutions/                                 → ID 364 (parent placeholder)
+│   ├── /solutions/arr-snowball-board-reporting/ → ID 372
+│   └── /solutions/customer-data-cube/          → ID 373
+├── /company/                                   → ID 366 (parent placeholder)
+│   ├── /company/about/                         → ID 374
+│   └── /company/contact/                       → ID 375
+├── /pricing/                                   → ID 111 (legacy)
+└── /login/                                     → ID 134 (legacy)
+```
+
+Parent pages (362, 364, 366) exist solely for URL hierarchy. They have no content.
+
+---
+
+## Cross-Linking
+
+All P1 pages are cross-linked via nav dropdowns, footer columns, and contextual CTAs:
+
+| Link Target | Path |
+|-------------|------|
+| Platform Overview | `/platform/overview/` |
+| ARR Snowball | `/solutions/arr-snowball-board-reporting/` |
+| Customer Data Cube | `/solutions/customer-data-cube/` |
+| About | `/company/about/` |
+| Contact | `/company/contact/` |
+| Blog | `/blog/` |
+| Log In | `https://app.getpacerai.com/.auth/login/aad` |
+| Request Demo | `https://calendly.com/pacerai` |
+
+Links to pages not yet built remain as `href="#"`.
 
 ---
 
 ## Asset Handling
 
-Images must map to one of:
 - Existing uploads at `https://getpacerai.com/wp-content/uploads/`
-- Inline SVG (preferred for icons — logo, chevrons, decorative elements)
-- Upload via `wp_upload_media` MCP tool for new assets
+- Inline SVG preferred for icons (logo, chevrons, decorative elements)
+- **Do not:** reference external CDNs, localhost paths, or data URIs for large images
 
-**Do not:** reference external CDNs, localhost paths, or data URIs for large images.
+---
+
+## File Map
+
+```
+src/
+├── homepage/
+│   ├── index-build.html            # Homepage (WP ID 25)
+│   └── index-build-backup-*.html   # Pre-deploy backups
+├── blog/
+│   ├── index-build.html            # Blog index (WP ID 230)
+│   ├── post-template.html          # Blog post template
+│   └── posts/                      # Individual blog posts
+├── platform/
+│   └── overview.html               # Platform Overview (WP ID 371)
+├── solutions/
+│   ├── arr-snowball.html           # ARR Snowball (WP ID 372)
+│   └── customer-data-cube.html     # Customer Data Cube (WP ID 373)
+└── company/
+    ├── about.html                  # About (WP ID 374)
+    └── contact.html                # Contact (WP ID 375)
+```
 
 ---
 
@@ -167,26 +222,6 @@ Images must map to one of:
 | WordPress.com (no SSH) | Cannot edit theme PHP files — content-only updates |
 | No WP-CLI access | Cannot flush object cache programmatically |
 | Yoast SEO active | Must preserve `yoast_head` — do not overwrite meta fields |
-| TT4 theme | Overrides needed to hide chrome and go full-width |
-| MCP `wp_alter_post` | Mangles `\n` in replacements — use REST API for full pushes |
+| TT4 theme | Overrides needed to hide chrome, page title, and spacer |
+| Shared elements | Nav/footer/CSS duplicated in each file — changes require batch redeploy |
 | `backdrop-filter` | Creates containing block — disabled on mobile nav |
-
----
-
-## File Map
-
-```
-src/homepage/
-└── index-build.html            # Complete page content (style + HTML + script), ready for API push
-
-docs/design/
-└── pacerai-homepage_by_Claude_030526_1522.html   # Original design mockup
-
-docs/review/
-├── pre-deploy-backup-*.json    # Backups before each deploy
-├── checklist.md                # QA checklist
-└── Issues.md                   # Known issues
-
-docs/document/
-└── changelog.md                # Running deploy log
-```

@@ -1,12 +1,14 @@
 # website-PacerAI
 
-Homepage refresh for [getpacerai.com](https://getpacerai.com) — AI-native build using the PDBRDD lifecycle.
+Marketing website for [getpacerai.com](https://getpacerai.com) — AI-native build using the PDBRDD lifecycle.
 
 ## Project Overview
 
-This repo manages the design, development, and deployment of the Pacer AI marketing website. The primary goal of this sprint is to deploy a refreshed homepage targeting Operating Partners, PE Portfolio Ops, CFOs, and RevOps leaders at $50M–$1B ARR SaaS companies.
+This repo manages the design, development, and deployment of the Pacer AI marketing website. Pages are authored as standalone HTML files with inline CSS, then deployed to WordPress.com as Pages via the REST API.
 
-**Tagline:** Turn operational data into agent intelligence.
+**Target audience:** Operating Partners, PE Portfolio Ops, CFOs, and RevOps leaders at $50M-$1B ARR SaaS companies.
+
+**Tagline:** Your ARR Snowball Report. Automated. Board-Ready.
 
 ---
 
@@ -15,55 +17,96 @@ This repo manages the design, development, and deployment of the Pacer AI market
 | Layer | Tool |
 |---|---|
 | CMS | WordPress.com (hosted) |
-| Deploy | WordPress REST API + Application Password |
+| Theme | Twenty Twenty-Four (overridden by inline CSS) |
+| Deploy | WordPress REST API + Application Password (Python) |
 | Dev Environment | Claude Code (Anthropic) |
 | Version Control | GitHub (`pacerai/website-PacerAI`) |
 | SEO | Yoast SEO (active plugin) |
-| Design Source | HTML mockup (docs/design/) |
+| Analytics | Google Site Kit (GA4 + Search Console) |
 
 ---
 
-## PDBRDD Lifecycle
+## Live Pages
+
+| Page | URL | WP ID | Source File |
+|------|-----|-------|-------------|
+| Home | https://getpacerai.com/ | 25 | `src/homepage/index-build.html` |
+| Blog | https://getpacerai.com/blog/ | 230 | `src/blog/index-build.html` |
+| Platform Overview | https://getpacerai.com/platform/overview/ | 371 | `src/platform/overview.html` |
+| ARR Snowball | https://getpacerai.com/solutions/arr-snowball-board-reporting/ | 372 | `src/solutions/arr-snowball.html` |
+| Customer Data Cube | https://getpacerai.com/solutions/customer-data-cube/ | 373 | `src/solutions/customer-data-cube.html` |
+| About | https://getpacerai.com/company/about/ | 374 | `src/company/about.html` |
+| Contact | https://getpacerai.com/company/contact/ | 375 | `src/company/contact.html` |
+
+---
+
+## Repository Structure
 
 ```
+src/
+├── homepage/           # Homepage build file
+├── blog/               # Blog index + post templates
+├── platform/           # Platform pages
+├── solutions/          # Solution/use case pages
+└── company/            # Company pages (about, contact)
+
 docs/
-├── plan/
-│   ├── overview.md        # Project goals, scope, success criteria
-│   └── prd.md             # Product requirements document
-├── design/
-│   └── pacerai-homepage_by_Claude_030526_1522.html   # Approved design mockup
-├── build/
-│   └── architecture.md    # Technical decisions, API approach, file map
-├── review/
-│   └── checklist.md       # QA, Lighthouse, SEO, mobile checks
-├── document/
-│   └── changelog.md       # What changed, why, and when
-└── deploy/
-    └── runbook.md         # Step-by-step deploy instructions for Claude Code
+├── plan/               # PRD, site tree, build prompts
+├── design/             # HTML mockups
+├── build/              # Architecture, technical decisions
+├── review/             # QA checklist, known issues, backups
+├── document/           # Changelog, internal documentation
+└── deploy/             # Deploy runbook
 ```
 
 ---
 
 ## Quick Start for Claude Code
 
-1. Confirm env vars are set: `WP_BASE_URL`, `WP_USER`, `WP_APP_PASSWORD`
-2. Read `AGENTS.md` for full operating instructions
-3. Read `docs/deploy/runbook.md` before touching any live page
-4. Design source of truth: `docs/design/pacerai-homepage_by_Claude_030526_1522.html`
+1. Source env vars: `source ~/.zshrc` — confirms `WP_BASE_URL`, `WP_USER`, `WP_APP_PASSWORD`
+2. Read `CLAUDE.md` for page registry and deploy workflows
+3. Read `AGENTS.md` for operating instructions and brand constraints
+4. Read `docs/deploy/runbook.md` before deploying to WordPress
+5. Site tree and build prompts for new pages: `docs/plan/site-tree-and-build-prompts.md`
+
+---
+
+## Deploy Workflow
+
+Each HTML source file is deployed to WordPress as a Page via the REST API:
+
+```python
+import requests, os
+
+source ~/.zshrc  # loads WP_BASE_URL, WP_USER, WP_APP_PASSWORD
+
+with open('src/platform/overview.html') as f:
+    html = f.read()
+
+content = f"<!-- wp:html -->{html}<!-- /wp:html -->"
+resp = requests.post(
+    f"{os.environ['WP_BASE_URL']}/wp-json/wp/v2/pages/371",
+    json={"content": content},
+    auth=(os.environ['WP_USER'], os.environ['WP_APP_PASSWORD'])
+)
+```
+
+See `docs/deploy/runbook.md` for full instructions including backup, verification, and batch deploys.
 
 ---
 
 ## Agents & Skills
 
-- **AGENTS.md** — Claude Code instructions for this repo
+- **CLAUDE.md** — Claude Code guidance, page registry, deploy patterns
+- **AGENTS.md** — Operating instructions, PDBRDD workflow, brand constraints
 - **MCP Servers in use:** Slack (notifications), Gmail (stakeholder comms), Notion (project tracking)
-- **Relevant Claude Skills:** `frontend-design`, `docx` (for PRD/spec docs)
 
 ---
 
-## Key Constraints
+## Brand Constraints
 
-- Only modify the homepage — no other pages
-- Preserve all Yoast SEO metadata
-- Brand: Georgia serif, white background, minimal — financial-professional aesthetic
-- No gradients, no playful UI elements
+- **Fonts:** DM Sans (body), Cormorant Garamond (headings)
+- **Background:** Dark navy (#080E1C)
+- **Accent:** Teal (#27899A), Teal Light (#70C49C)
+- **Aesthetic:** Minimal, financial-professional. No playful UI elements.
+- **CTA language:** "Request a Demo", "Talk to a RevOps Expert" — never "Get Started Free"

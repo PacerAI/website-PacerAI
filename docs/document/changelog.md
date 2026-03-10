@@ -1,18 +1,35 @@
 # Changelog — website-PacerAI
 
-All homepage deployments logged here in reverse chronological order.
+All deployments logged here in reverse chronological order.
 
-Format per entry:
-```
-## [DATE] — [DESCRIPTION]
-- **Page ID:** 
+---
+
+## 2026-03-10 — P1 Site Expansion: 5 New Pages + Cross-Linking + Blog Update
+- **Pages deployed:**
+  - Platform Overview (ID 371) → https://getpacerai.com/platform/overview/
+  - ARR Snowball Board Reporting (ID 372) → https://getpacerai.com/solutions/arr-snowball-board-reporting/
+  - Customer Data Cube (ID 373) → https://getpacerai.com/solutions/customer-data-cube/
+  - About (ID 374) → https://getpacerai.com/company/about/
+  - Contact (ID 375) → https://getpacerai.com/company/contact/
+- **Parent pages created:** Platform (362), Solutions (364), Company (366) — empty placeholders for URL hierarchy
 - **Deployed by:** Claude Code
 - **Approved by:** Will Sullivan
-- **Content size:** [before] → [after] characters
-- **Changes:** 
-- **Issues:** 
-- **Live URL:** https://getpacerai.com
-```
+- **Changes:**
+  - Built 5 P1 pages as standalone HTML files with inline CSS matching homepage design system
+  - Each page follows shared pattern: TT4 overrides, CSS variables, nav, page content, footer, mobile JS
+  - Cross-linked all 7 pages (homepage, blog, platform, ARR snowball, customer data cube, about, contact) at nav, footer, and content-level CTAs/links
+  - Added `.wp-block-post-title, .wp-block-spacer { display: none }` to all page files to fix TT4 page title gap
+  - Updated blog nav/footer links to match P1 cross-linking
+  - Redeployed homepage (ID 25) and blog (ID 230) with updated cross-links
+  - Fixed Solutions/Company parent page titles (were "usolutions"/"ucompany" from sed issue)
+- **New source files:**
+  - `src/platform/overview.html`
+  - `src/solutions/arr-snowball.html`
+  - `src/solutions/customer-data-cube.html`
+  - `src/company/about.html`
+  - `src/company/contact.html`
+- **Documentation updated:** CLAUDE.md, AGENTS.md, README.md, architecture.md, runbook.md, changelog.md, Internal_Documentation.md, overview.md
+- **Issues:** Yoast SEO metadata not yet set for new pages
 
 ---
 

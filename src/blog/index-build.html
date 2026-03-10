@@ -1,0 +1,754 @@
+<style>
+/* Hide TT4 theme chrome */
+.wp-site-blocks > header,
+.wp-site-blocks > footer,
+header.wp-block-template-part,
+footer.wp-block-template-part,
+.wp-block-template-part:first-child { display: none !important; }
+.wp-block-post-title, .wp-block-spacer { display: none !important; }
+
+html, body, .wp-site-blocks {
+  background: #080E1C !important;
+  background-color: #080E1C !important;
+}
+
+#pacerai-blog {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+.wp-site-blocks,
+.wp-site-blocks > main,
+.wp-site-blocks > main > .wp-block-group,
+.wp-site-blocks .is-layout-constrained,
+.wp-site-blocks .is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)),
+.has-global-padding,
+.entry-content {
+  max-width: none !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-top: 0 !important;
+}
+
+  :root {
+    --navy: #080E1C;
+    --navy-mid: #0F1929;
+    --navy-light: #162038;
+    --navy-border: #1E2D4A;
+    --brand: #1C3560;
+    --brand-blue: #2B7DC8;
+    --teal: #27899A;
+    --teal-light: #70C49C;
+    --teal-pale: #D6F0E8;
+    --cream: #F7F3EC;
+    --white: #FFFFFF;
+    --muted: #8A95A8;
+    --text-light: #CDD5E0;
+    --text-mid: #94A3B8;
+    --green: #2DB87A;
+    --red-subtle: #C94C4C;
+  }
+
+  #pacerai-blog * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  #pacerai-blog {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    color: var(--text-light);
+    overflow-x: hidden;
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  /* ─── NAV ─── */
+  #pacerai-blog nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 48px;
+    height: 68px;
+    background: rgba(8,14,28,0.92);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(28,53,96,0.6);
+  }
+
+  #pacerai-blog .nav-links {
+    display: flex; align-items: center; gap: 4px;
+    list-style: none;
+  }
+  #pacerai-blog .nav-links > li { position: relative; }
+  #pacerai-blog .nav-links > li > a {
+    display: flex; align-items: center; gap: 5px;
+    padding: 8px 14px;
+    font-size: 13.5px; font-weight: 500; letter-spacing: 0.02em;
+    color: var(--text-mid);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: color 0.2s, background 0.2s;
+  }
+  #pacerai-blog .nav-links > li > a:hover { color: var(--white); background: rgba(255,255,255,0.05); }
+  #pacerai-blog .nav-links > li > a .chevron {
+    font-size: 10px; margin-top: 1px;
+    transition: transform 0.2s;
+  }
+  #pacerai-blog .nav-links > li:hover > a .chevron { transform: rotate(180deg); }
+
+  /* Dropdown */
+  #pacerai-blog .dropdown {
+    display: none;
+    position: absolute; top: 100%; left: 50%;
+    transform: translateX(-50%);
+    background: var(--navy-mid);
+    border: 1px solid var(--navy-border);
+    border-radius: 12px;
+    padding: 20px;
+    padding-top: 28px;
+    min-width: 520px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+  }
+  #pacerai-blog .dropdown::before {
+    content: '';
+    position: absolute;
+    top: -12px; left: 0; right: 0;
+    height: 12px;
+  }
+  #pacerai-blog .nav-links > li:hover .dropdown { display: block; }
+
+  #pacerai-blog .dropdown-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 32px; }
+  #pacerai-blog .dropdown-col-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--teal);
+    padding-bottom: 10px; margin-bottom: 6px;
+    border-bottom: 1px solid var(--navy-border);
+  }
+  #pacerai-blog .dropdown a {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 10px 10px; border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+  #pacerai-blog .dropdown a:hover { background: rgba(255,255,255,0.04); }
+  #pacerai-blog .dropdown .d-icon {
+    width: 32px; height: 32px; flex-shrink: 0;
+    background: var(--navy-light);
+    border: 1px solid var(--navy-border);
+    border-radius: 7px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+  #pacerai-blog .dropdown .d-text .d-title {
+    font-size: 13px; font-weight: 500; color: var(--white);
+    display: block; line-height: 1.3;
+  }
+  #pacerai-blog .dropdown .d-text .d-desc {
+    font-size: 12px; color: var(--muted); line-height: 1.4;
+    margin-top: 2px;
+  }
+
+  #pacerai-blog .single-dropdown { min-width: 220px; }
+  #pacerai-blog .single-dropdown a {
+    padding: 9px 12px; border-radius: 8px;
+    text-decoration: none; display: block;
+    font-size: 13px; font-weight: 500; color: var(--text-light);
+    transition: background 0.15s, color 0.15s;
+  }
+  #pacerai-blog .single-dropdown a:hover { background: rgba(255,255,255,0.05); color: var(--white); }
+
+  /* Hamburger — hidden on desktop */
+  #pacerai-blog .mobile-menu-btn {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    z-index: 101;
+  }
+  #pacerai-blog .mobile-menu-btn span {
+    display: block;
+    width: 22px; height: 2px;
+    background: var(--text-light);
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+  #pacerai-blog .mobile-menu-btn.open span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  #pacerai-blog .mobile-menu-btn.open span:nth-child(2) { opacity: 0; }
+  #pacerai-blog .mobile-menu-btn.open span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
+
+  #pacerai-blog .nav-right {
+    display: flex; align-items: center; gap: 12px;
+  }
+  #pacerai-blog .btn-ghost {
+    padding: 8px 18px; font-size: 13.5px; font-weight: 500;
+    color: var(--text-light); background: transparent;
+    border: 1px solid var(--navy-border); border-radius: 7px;
+    cursor: pointer; text-decoration: none;
+    transition: all 0.2s;
+  }
+  #pacerai-blog .btn-ghost:hover { color: var(--white); border-color: rgba(39,137,154,0.45); }
+  #pacerai-blog .btn-teal {
+    padding: 9px 20px; font-size: 13.5px; font-weight: 600;
+    color: #fff; background: var(--teal);
+    border: none; border-radius: 7px;
+    cursor: pointer; text-decoration: none;
+    transition: all 0.2s; letter-spacing: 0.02em;
+  }
+  #pacerai-blog .btn-teal:hover { background: var(--teal-light); transform: translateY(-1px); box-shadow: 0 8px 20px rgba(39,137,154,0.35); }
+
+  /* ─── BLOG HERO ─── */
+  #pacerai-blog .blog-hero {
+    padding: 140px 48px 60px;
+    text-align: center;
+    border-bottom: 1px solid var(--navy-border);
+  }
+  #pacerai-blog .blog-hero .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 16px 6px 8px;
+    background: rgba(39,137,154,0.10);
+    border: 1px solid rgba(39,137,154,0.22);
+    border-radius: 100px;
+    font-size: 12px; font-weight: 500; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--teal);
+    margin-bottom: 24px;
+  }
+  #pacerai-blog .blog-hero .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--teal);
+  }
+  #pacerai-blog .blog-hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 300; line-height: 1.1;
+    color: var(--white);
+    letter-spacing: -0.01em;
+    margin-bottom: 16px;
+  }
+  #pacerai-blog .blog-hero h1 em { font-style: italic; color: var(--teal); }
+  #pacerai-blog .blog-hero p {
+    font-size: 17px; color: var(--text-mid);
+    max-width: 560px; margin: 0 auto; line-height: 1.7;
+  }
+
+  /* ─── CATEGORY FILTER ─── */
+  #pacerai-blog .category-bar {
+    display: flex; justify-content: center; gap: 8px;
+    padding: 32px 48px;
+    flex-wrap: wrap;
+  }
+  #pacerai-blog .cat-pill {
+    padding: 8px 18px; font-size: 13px; font-weight: 500;
+    color: var(--muted); text-decoration: none;
+    border: 1px solid var(--navy-border);
+    border-radius: 100px; background: transparent;
+    transition: all 0.2s; cursor: pointer;
+  }
+  #pacerai-blog .cat-pill:hover {
+    color: var(--white); border-color: rgba(39,137,154,0.35);
+    background: rgba(39,137,154,0.06);
+  }
+  #pacerai-blog .cat-pill.active {
+    color: var(--teal); border-color: rgba(39,137,154,0.4);
+    background: rgba(39,137,154,0.08); font-weight: 600;
+  }
+
+  /* ─── BLOG GRID ─── */
+  #pacerai-blog .blog-grid {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 48px 100px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  #pacerai-blog .blog-grid .featured {
+    grid-column: 1 / -1;
+  }
+
+  #pacerai-blog .blog-card {
+    background: var(--navy-mid);
+    border: 1px solid var(--navy-border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.25s;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+  }
+  #pacerai-blog .blog-card:hover {
+    background: var(--navy-light);
+    border-color: rgba(39,137,154,0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+  }
+
+  #pacerai-blog .blog-card .card-body {
+    padding: 32px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  #pacerai-blog .blog-card.featured .card-body { padding: 40px; }
+
+  #pacerai-blog .blog-card .card-meta {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 16px;
+  }
+  #pacerai-blog .blog-card .card-category {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 10px; border-radius: 4px;
+    background: rgba(39,137,154,0.12); color: var(--teal);
+    border: 1px solid rgba(39,137,154,0.22);
+  }
+  #pacerai-blog .blog-card .card-date {
+    font-size: 12px; color: var(--muted);
+  }
+
+  #pacerai-blog .blog-card h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px; font-weight: 500; color: var(--white);
+    line-height: 1.2; margin-bottom: 12px;
+  }
+  #pacerai-blog .blog-card.featured h2 {
+    font-size: clamp(28px, 3vw, 36px);
+  }
+
+  #pacerai-blog .blog-card .card-excerpt {
+    font-size: 14px; color: var(--text-mid); line-height: 1.7;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  #pacerai-blog .blog-card.featured .card-excerpt {
+    -webkit-line-clamp: 4;
+  }
+
+  #pacerai-blog .blog-card .card-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 20px; font-size: 13px; font-weight: 500;
+    color: var(--teal); text-decoration: none;
+    transition: gap 0.2s;
+  }
+  #pacerai-blog .blog-card:hover .card-link { gap: 10px; }
+
+  /* ─── NEWSLETTER CTA ─── */
+  #pacerai-blog .newsletter-section {
+    padding: 80px 48px;
+    background: var(--navy-mid);
+    border-top: 1px solid var(--navy-border);
+    border-bottom: 1px solid var(--navy-border);
+    text-align: center;
+  }
+  #pacerai-blog .newsletter-section h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(28px, 3.5vw, 42px);
+    font-weight: 300; color: var(--white);
+    margin-bottom: 12px;
+  }
+  #pacerai-blog .newsletter-section h2 em { font-style: italic; color: var(--teal); }
+  #pacerai-blog .newsletter-section p {
+    font-size: 15px; color: var(--text-mid);
+    max-width: 480px; margin: 0 auto 28px; line-height: 1.7;
+  }
+  #pacerai-blog .newsletter-section .btn-teal {
+    padding: 14px 30px; font-size: 15px;
+  }
+
+  /* ─── FOOTER ─── */
+  #pacerai-blog footer {
+    background: var(--navy);
+    border-top: 1px solid var(--navy-border);
+    padding: 80px 48px 40px;
+  }
+  #pacerai-blog .footer-top {
+    display: grid;
+    grid-template-columns: 240px 1fr 1fr 1fr 1fr;
+    gap: 48px;
+    padding-bottom: 64px;
+    border-bottom: 1px solid var(--navy-border);
+    margin-bottom: 40px;
+  }
+  #pacerai-blog .footer-brand p {
+    font-size: 13px; color: var(--muted); line-height: 1.7; margin-top: 16px;
+  }
+  #pacerai-blog .footer-col-head {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-light);
+    margin-bottom: 20px;
+  }
+  #pacerai-blog .footer-col ul { list-style: none; }
+  #pacerai-blog .footer-col ul li { margin-bottom: 10px; }
+  #pacerai-blog .footer-col ul li a {
+    font-size: 13px; color: var(--muted); text-decoration: none;
+    transition: color 0.2s;
+  }
+  #pacerai-blog .footer-col ul li a:hover { color: var(--teal); }
+  #pacerai-blog .footer-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 16px;
+  }
+  #pacerai-blog .footer-bottom .copy {
+    font-size: 12px; color: var(--muted); letter-spacing: 0.03em;
+  }
+  #pacerai-blog .footer-bottom .legal { display: flex; gap: 24px; }
+  #pacerai-blog .footer-bottom .legal a {
+    font-size: 12px; color: var(--muted); text-decoration: none;
+    transition: color 0.2s;
+  }
+  #pacerai-blog .footer-bottom .legal a:hover { color: var(--text-mid); }
+
+  /* ─── MOBILE ─── */
+  @media (max-width: 768px) {
+    #pacerai-blog nav {
+      padding: 0 16px;
+      height: 56px;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      background: #080E1C;
+      overflow: visible;
+    }
+    #pacerai-blog .nav-links {
+      display: none !important;
+      position: fixed;
+      top: 56px; left: 0; right: 0; bottom: 0;
+      background: #080E1C;
+      flex-direction: column;
+      align-items: stretch;
+      padding: 16px 20px;
+      overflow-y: auto;
+      z-index: 200;
+      border-top: 1px solid var(--navy-border);
+      list-style: none;
+    }
+    #pacerai-blog .nav-links.mobile-open { display: flex !important; }
+    #pacerai-blog .nav-links > li { border-bottom: 1px solid var(--navy-border); }
+    #pacerai-blog .nav-links > li > a {
+      padding: 16px 0; font-size: 16px; border-bottom: none;
+      display: flex; justify-content: space-between; color: #CDD5E0;
+    }
+    #pacerai-blog .nav-links > li > a:hover { background: none; }
+    #pacerai-blog .nav-links .dropdown {
+      position: static !important; transform: none !important;
+      min-width: 0 !important; background: transparent !important;
+      border: none !important; box-shadow: none !important;
+      padding: 0 0 12px 16px !important; border-radius: 0 !important;
+      padding-top: 0 !important;
+    }
+    #pacerai-blog .nav-links .dropdown::before { display: none; }
+    #pacerai-blog .nav-links > li:hover .dropdown { display: none !important; }
+    #pacerai-blog .nav-links > li.mobile-expanded .dropdown { display: block !important; }
+    #pacerai-blog .nav-links .dropdown a { padding: 10px 0; font-size: 14px; color: #94A3B8; }
+    #pacerai-blog .nav-links .dropdown-grid { grid-template-columns: 1fr; }
+    #pacerai-blog .nav-right .btn-ghost { display: none; }
+    #pacerai-blog .nav-right .btn-teal { padding: 7px 14px; font-size: 12px; }
+    #pacerai-blog .mobile-menu-btn { display: flex !important; }
+
+    #pacerai-blog .blog-hero { padding: 90px 20px 40px; }
+    #pacerai-blog .blog-hero h1 { font-size: 32px; }
+    #pacerai-blog .category-bar { padding: 24px 20px; }
+    #pacerai-blog .blog-grid {
+      grid-template-columns: 1fr;
+      padding: 0 20px 60px;
+    }
+    #pacerai-blog .blog-card.featured { grid-column: 1; }
+    #pacerai-blog .blog-card .card-body { padding: 24px; }
+    #pacerai-blog .newsletter-section { padding: 60px 20px; }
+    #pacerai-blog footer { padding: 48px 20px 32px; }
+    #pacerai-blog .footer-top {
+      grid-template-columns: 1fr 1fr;
+      gap: 32px 24px;
+    }
+    #pacerai-blog .footer-brand { grid-column: 1 / -1; }
+    #pacerai-blog .footer-bottom {
+      flex-direction: column; align-items: flex-start; gap: 12px;
+    }
+    #pacerai-blog .footer-bottom .legal { flex-wrap: wrap; gap: 12px; }
+  }
+
+  @media (max-width: 1024px) and (min-width: 769px) {
+    #pacerai-blog nav { padding: 0 24px; }
+    #pacerai-blog .nav-links > li > a { padding: 8px 8px; font-size: 12px; }
+    #pacerai-blog .blog-hero { padding: 120px 24px 48px; }
+    #pacerai-blog .blog-grid { padding: 0 24px 80px; }
+    #pacerai-blog .footer-top {
+      grid-template-columns: 1fr 1fr 1fr; gap: 32px;
+    }
+    #pacerai-blog .footer-brand { grid-column: 1 / -1; }
+    #pacerai-blog footer { padding: 60px 24px 32px; }
+  }
+</style>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<div id="pacerai-blog">
+<!-- ═══════════════════════════════════════ NAV ═══════════════════════════════════════ -->
+<nav>
+  <a href="/" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
+    <svg width="32" height="28" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M2 2 L11 14 L2 26" stroke="#1C3D6E" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <path d="M11 2 L20 14 L11 26" stroke="#27899A" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <path d="M20 2 L29 14 L20 26" stroke="#70C49C" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </svg>
+    <span style="font-family:Georgia,'Times New Roman',serif;font-size:21px;font-weight:bold;color:#fff;letter-spacing:0.01em;">Pacer&nbsp;<span style="color:#70C49C;">AI</span></span>
+  </a>
+
+  <ul class="nav-links">
+    <li>
+      <a href="#">Platform <span class="chevron">▾</span></a>
+      <div class="dropdown single-dropdown" style="min-width:200px">
+        <a href="/platform/overview/">Overview</a>
+        <a href="#">Data Ingestion</a>
+        <a href="#">Fabric + Power BI</a>
+        <a href="#">AI Agents</a>
+        <a href="#">Excel + Copilot</a>
+        <a href="#">Security &amp; Compliance</a>
+      </div>
+    </li>
+    <li>
+      <a href="#">Solutions <span class="chevron">▾</span></a>
+      <div class="dropdown" style="min-width:560px">
+        <div class="dropdown-grid">
+          <div>
+            <div class="dropdown-col-label">Use Cases</div>
+            <a href="/solutions/arr-snowball-board-reporting/"><div class="d-icon">📊</div><div class="d-text"><span class="d-title">ARR Snowball Board Reporting</span><span class="d-desc">Board-ready waterfall models in minutes</span></div></a>
+            <a href="/solutions/customer-data-cube/"><div class="d-icon">🧊</div><div class="d-text"><span class="d-title">Customer Data Cube</span><span class="d-desc">Unified customer revenue analytics</span></div></a>
+            <a href="#"><div class="d-icon">📁</div><div class="d-text"><span class="d-title">Virtual Data Room</span><span class="d-desc">Investor-grade data room automation</span></div></a>
+            <a href="#"><div class="d-icon">🚀</div><div class="d-text"><span class="d-title">Exit Readiness</span><span class="d-desc">M&amp;A-grade revenue due diligence prep</span></div></a>
+          </div>
+          <div>
+            <div class="dropdown-col-label">Industry</div>
+            <a href="#"><div class="d-icon">☁️</div><div class="d-text"><span class="d-title">B2B SaaS</span><span class="d-desc">$50M–$1B ARR companies</span></div></a>
+            <a href="#"><div class="d-icon">💼</div><div class="d-text"><span class="d-title">PE-Backed SaaS</span><span class="d-desc">Portfolio company reporting</span></div></a>
+            <a href="#"><div class="d-icon">📈</div><div class="d-text"><span class="d-title">Pre-IPO SaaS</span><span class="d-desc">S-1 ready revenue metrics</span></div></a>
+          </div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <a href="#">Resources <span class="chevron">▾</span></a>
+      <div class="dropdown single-dropdown">
+        <a href="/blog/">Blog</a>
+        <a href="#">Agents of Insight Newsletter</a>
+        <a href="#">ARR Snowball Guide</a>
+        <a href="#">Templates &amp; Frameworks</a>
+        <a href="#">Documentation</a>
+        <a href="#">Webinars</a>
+      </div>
+    </li>
+    <li><a href="#">Partners</a></li>
+    <li><a href="#">Case Studies</a></li>
+    <li>
+      <a href="#">Company <span class="chevron">▾</span></a>
+      <div class="dropdown single-dropdown">
+        <a href="/company/about/">About</a>
+        <a href="#">Founders Story</a>
+        <a href="#">Careers</a>
+        <a href="/company/contact/">Contact</a>
+      </div>
+    </li>
+  </ul>
+
+  <div class="nav-right">
+    <a href="https://app.getpacerai.com/.auth/login/aad" class="btn-ghost">Log In</a>
+    <a href="https://calendly.com/pacerai" class="btn-teal">Request Demo</a>
+    <button class="mobile-menu-btn" aria-label="Menu" onclick="(function(btn){var nav=document.querySelector('#pacerai-blog nav');var links=nav.querySelector('.nav-links');var isOpen=links.classList.contains('mobile-open');btn.classList.toggle('open');links.classList.toggle('mobile-open');document.body.style.overflow=isOpen?'':'hidden';document.documentElement.style.overflow=isOpen?'':'hidden'})(this)">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════ HERO ═══════════════════════════════════════ -->
+<section class="blog-hero">
+  <div class="eyebrow"><span class="dot"></span> INSIGHTS &amp; ANALYSIS</div>
+  <h1>The Pacer AI <em>Blog</em></h1>
+  <p>Revenue intelligence insights for Operating Partners, CFOs, and RevOps leaders at PE-backed SaaS companies.</p>
+</section>
+
+<!-- ═══════════════════════════════════════ CATEGORIES ═══════════════════════════════════════ -->
+<div class="category-bar">
+  <span class="cat-pill active">All Posts</span>
+  <span class="cat-pill">ARR Snowballs</span>
+  <span class="cat-pill">Frameworks</span>
+  <span class="cat-pill">RevOps</span>
+  <span class="cat-pill">AI &amp; Agents</span>
+</div>
+
+<!-- ═══════════════════════════════════════ BLOG GRID ═══════════════════════════════════════ -->
+<div class="blog-grid">
+
+  <!-- Featured Post -->
+  <a href="/why-arr-waterfall-models-matter-for-saas-growth/" class="blog-card featured">
+    <div class="card-body">
+      <div class="card-meta">
+        <span class="card-category">ARR Snowballs</span>
+        <span class="card-date">January 27, 2026</span>
+      </div>
+      <h2>Why ARR Waterfall Models Matter for SaaS Growth</h2>
+      <p class="card-excerpt">In the dynamic world of B2B SaaS, understanding revenue goes far beyond a simple top-line number. Most companies track aggregate Annual Recurring Revenue (ARR), yet this often creates a significant revenue visibility gap, failing to reveal the underlying movements that truly drive growth or signal impending challenges.</p>
+      <span class="card-link">Read Article →</span>
+    </div>
+  </a>
+
+  <!-- Post 2 -->
+  <a href="/using-ai-to-enable-revops-without-breaking-your-gtm/" class="blog-card">
+    <div class="card-body">
+      <div class="card-meta">
+        <span class="card-category">RevOps</span>
+        <span class="card-date">January 20, 2026</span>
+      </div>
+      <h2>Using AI to Enable RevOps (Without Breaking Your GTM)</h2>
+      <p class="card-excerpt">RevOps is one of the best places to deploy AI because it sits at the intersection of systems, process, and business outcomes. Done right, AI agents can reduce manual analysis, speed up response times, and help revenue teams focus on what matters.</p>
+      <span class="card-link">Read Article →</span>
+    </div>
+  </a>
+
+  <!-- Post 3 -->
+  <a href="/arr-snowball-analysis-find-your-expansion-drivers/" class="blog-card">
+    <div class="card-body">
+      <div class="card-meta">
+        <span class="card-category">ARR Snowballs</span>
+        <span class="card-date">January 12, 2026</span>
+      </div>
+      <h2>ARR Snowball Analysis: Find Your Expansion Drivers</h2>
+      <p class="card-excerpt">Most companies track Annual Recurring Revenue changes at an aggregate level, which often misses the granular patterns that truly drive growth. Understanding these dynamics requires a deeper dive into the ARR Snowball framework.</p>
+      <span class="card-link">Read Article →</span>
+    </div>
+  </a>
+
+  <!-- Post 4 -->
+  <a href="/prevent-churn-in-high-value-accounts-with-arr-snowball/" class="blog-card">
+    <div class="card-body">
+      <div class="card-meta">
+        <span class="card-category">ARR Snowballs</span>
+        <span class="card-date">January 12, 2026</span>
+      </div>
+      <h2>Prevent Churn in High-Value Accounts with ARR Snowball</h2>
+      <p class="card-excerpt">Losing a high-value account generating $50K+ in ARR can be disproportionately damaging to a B2B SaaS company's growth and valuation. Preventing this attrition is paramount, as retaining customers costs significantly less than acquiring new ones.</p>
+      <span class="card-link">Read Article →</span>
+    </div>
+  </a>
+
+  <!-- Post 5 -->
+  <a href="/what-is-an-arr-snowball-understanding-revenue-growth/" class="blog-card">
+    <div class="card-body">
+      <div class="card-meta">
+        <span class="card-category">ARR Snowballs</span>
+        <span class="card-date">January 12, 2026</span>
+      </div>
+      <h2>What Is an ARR Snowball? Understanding Revenue Growth</h2>
+      <p class="card-excerpt">For SaaS businesses, sustainable growth isn't just about acquiring new customers; it's about the compounding power of existing revenue. The ARR snowball effect describes how small improvements in retention and expansion lead to exponentially faster ARR growth over time.</p>
+      <span class="card-link">Read Article →</span>
+    </div>
+  </a>
+
+</div>
+
+<!-- ═══════════════════════════════════════ NEWSLETTER ═══════════════════════════════════════ -->
+<section class="newsletter-section">
+  <h2>Subscribe to <em>Agents of Insight</em></h2>
+  <p>Weekly revenue intelligence insights, ARR analysis tips, and AI + RevOps trends. Delivered every Thursday.</p>
+  <a href="#" class="btn-teal">Subscribe on Substack →</a>
+</section>
+
+<!-- ═══════════════════════════════════════ FOOTER ═══════════════════════════════════════ -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="/" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
+        <svg width="28" height="24" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M2 2 L11 14 L2 26" stroke="#4A7FA8" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <path d="M11 2 L20 14 L11 26" stroke="#27899A" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <path d="M20 2 L29 14 L20 26" stroke="#70C49C" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+        <span style="font-family:Georgia,'Times New Roman',serif;font-size:18px;font-weight:bold;color:#fff;letter-spacing:0.01em;">Pacer&nbsp;<span style="color:#70C49C;">AI</span></span>
+      </a>
+      <p>Institutional-grade ARR intelligence for high-growth SaaS companies. Built on Microsoft Fabric, Power BI, and AI.</p>
+    </div>
+
+    <div class="footer-col">
+      <div class="footer-col-head">Platform</div>
+      <ul>
+        <li><a href="/platform/overview/">Platform Overview</a></li>
+        <li><a href="#">Data Ingestion</a></li>
+        <li><a href="#">Microsoft Fabric</a></li>
+        <li><a href="#">Power BI Dashboards</a></li>
+        <li><a href="#">AI Agents</a></li>
+        <li><a href="#">Excel + Copilot</a></li>
+        <li><a href="#">Security</a></li>
+        <li><a href="#">Integrations</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <div class="footer-col-head">Use Cases</div>
+      <ul>
+        <li><a href="/solutions/arr-snowball-board-reporting/">ARR Snowball Board Reporting</a></li>
+        <li><a href="/solutions/customer-data-cube/">Customer Data Cube</a></li>
+        <li><a href="#">Virtual Data Room</a></li>
+        <li><a href="#">Exit Readiness</a></li>
+        <li><a href="#">MBR Automation</a></li>
+        <li><a href="#">GTM Analytics</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <div class="footer-col-head">Comparisons</div>
+      <ul>
+        <li><a href="#">vs. Manual Excel</a></li>
+        <li><a href="#">vs. Mosaic Tech</a></li>
+        <li><a href="#">vs. Vena Solutions</a></li>
+        <li><a href="#">vs. Pigment</a></li>
+        <li><a href="#">vs. Causal</a></li>
+        <li><a href="#">vs. Cube</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <div class="footer-col-head">Company</div>
+      <ul>
+        <li><a href="/company/about/">About Pacer AI</a></li>
+        <li><a href="#">Agents of Insight Newsletter</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="#">Partners</a></li>
+        <li><a href="#">Case Studies</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="/company/contact/">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="copy">&copy; 2025 Predictive Analytics Partners LLC &middot; getpacerai.com</div>
+    <div class="legal">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Cookie Settings</a>
+      <a href="#">LinkedIn</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  if(window.innerWidth>768) return;
+  document.querySelectorAll('#pacerai-blog .nav-links > li > a').forEach(function(a){
+    var li=a.parentElement;
+    if(!li.querySelector('.dropdown')) return;
+    a.addEventListener('click',function(e){
+      e.preventDefault();
+      li.classList.toggle('mobile-expanded');
+    });
+  });
+})();
+</script>
+
+</div>

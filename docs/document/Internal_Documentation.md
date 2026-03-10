@@ -1,6 +1,6 @@
 # Internal Documentation — getpacerai.com
 
-**Last updated:** 2026-03-09
+**Last updated:** 2026-03-10
 **Owner:** Will Sullivan, Founder
 
 ---
@@ -72,35 +72,60 @@ Pacer AI is an ARR intelligence platform built for PE-backed B2B SaaS companies 
 
 ## 3. Site Tree (Current State)
 
+**Last updated:** 2026-03-10
+
 ```
 getpacerai.com/
-├── / (Home)                          ← Page ID 25, slug: no-title
+├── / (Home)                                          ← Page ID 25, slug: no-title
 │   ├── Nav: Platform | Solutions | Resources | Partners | Case Studies | Company
-│   ├── Hero: ARR Snowball headline + CTAs
-│   ├── Dashboard preview (ARR waterfall mockup)
-│   ├── Logo strip (technology partners)
-│   ├── Use cases (9 items in menu strip + 5 detail cards)
-│   ├── How It Works (4 steps)
-│   ├── Platform Pillars (3 columns)
-│   ├── Empathy section (problems + expert card)
-│   ├── Testimonial
-│   ├── Bottom CTA
+│   ├── Hero, Dashboard Preview, Logo Strip, Use Cases, How It Works
+│   ├── Platform Pillars, Empathy Section, Testimonial, CTA
 │   └── Footer (Platform | Use Cases | Comparisons | Company)
 │
-├── /pricing/                         ← Page ID 111
-├── /login/                           ← Page ID 134
-├── /blog/                            ← Page ID 230
-│   ├── Why ARR Waterfall Models Matter for SaaS Growth (2026-01-27, ID 288)
-│   ├── Using AI to Enable RevOps Without Breaking Your GTM (2026-01-20, ID 264)
-│   ├── ARR Snowball Analysis: Find Your Expansion Drivers (2026-01-12, ID 244)
-│   ├── Prevent Churn in High-Value Accounts with ARR Snowball (2026-01-12, ID 236)
-│   └── What Is an ARR Snowball? Understanding Revenue Growth (2026-01-12, ID 227)
+├── /platform/                                        ← Page ID 362 (parent placeholder)
+│   └── /platform/overview/                           ← Page ID 371
+│       └── Architecture diagram, 3 capability pillars, integration grid
+│
+├── /solutions/                                       ← Page ID 364 (parent placeholder)
+│   ├── /solutions/arr-snowball-board-reporting/       ← Page ID 372
+│   │   └── AEO definition, problem grid, ARR components, dashboard mockup, FAQ (JSON-LD)
+│   └── /solutions/customer-data-cube/                ← Page ID 373
+│       └── AEO definition, 6-dimension grid, use cases, dashboard mockup, FAQ (JSON-LD)
+│
+├── /company/                                         ← Page ID 366 (parent placeholder)
+│   ├── /company/about/                               ← Page ID 374
+│   │   └── Mission, old-way/new-way contrast, founder bio, values, tech partners
+│   └── /company/contact/                             ← Page ID 375
+│       └── Contact form, Calendly link, email addresses, partnerships
+│
+├── /pricing/                                         ← Page ID 111 (legacy)
+├── /login/                                           ← Page ID 134 (legacy)
+├── /blog/                                            ← Page ID 230
+│   ├── Why ARR Waterfall Models Matter for SaaS Growth (ID 358)
+│   ├── Using AI to Enable RevOps Without Breaking Your GTM (ID 360)
+│   ├── ARR Snowball Analysis: Find Your Expansion Drivers (ID 368)
+│   ├── Prevent Churn in High-Value Accounts with ARR Snowball (ID 376)
+│   └── What Is an ARR Snowball? Understanding Revenue Growth (ID 378)
 │
 └── External Links
     ├── https://app.getpacerai.com/.auth/login/aad  (Log In — Entra ID auth)
     ├── https://calendly.com/pacerai                 (Request Demo / Schedule)
     └── Substack: Agents of Insight newsletter        (TBD — needs link)
 ```
+
+### Source File Mapping
+
+| WP Page | WP ID | Source File |
+|---------|-------|-------------|
+| Home | 25 | `src/homepage/index-build.html` |
+| Blog | 230 | `src/blog/index-build.html` |
+| Platform Overview | 371 | `src/platform/overview.html` |
+| ARR Snowball | 372 | `src/solutions/arr-snowball.html` |
+| Customer Data Cube | 373 | `src/solutions/customer-data-cube.html` |
+| About | 374 | `src/company/about.html` |
+| Contact | 375 | `src/company/contact.html` |
+
+All pages deployed via WordPress REST API. See `CLAUDE.md` for full page registry and `docs/deploy/runbook.md` for deploy instructions.
 
 ---
 
@@ -109,12 +134,12 @@ getpacerai.com/
 ### Header Nav (Desktop)
 | Item | Type | Destination |
 |------|------|-------------|
-| Platform | Dropdown | Overview, Data Ingestion, Fabric + Power BI, AI Agents, Excel + Copilot, Security & Compliance |
-| Solutions | Mega dropdown | **Use Cases:** ARR Snowball, Customer Data Cube, Virtual Data Room, Exit Readiness. **Industry:** B2B SaaS, PE-Backed SaaS, Pre-IPO SaaS |
-| Resources | Dropdown | Blog, Agents of Insight Newsletter, ARR Snowball Guide, Templates & Frameworks, Documentation, Webinars |
+| Platform | Dropdown | **Overview** → `/platform/overview/`, Data Ingestion → `#`, Fabric + Power BI → `#`, AI Agents → `#`, Excel + Copilot → `#`, Security & Compliance → `#` |
+| Solutions | Mega dropdown | **Use Cases:** ARR Snowball → `/solutions/arr-snowball-board-reporting/`, Customer Data Cube → `/solutions/customer-data-cube/`, Virtual Data Room → `#`, Exit Readiness → `#`. **Industry:** B2B SaaS → `#`, PE-Backed SaaS → `#`, Pre-IPO SaaS → `#` |
+| Resources | Dropdown | **Blog** → `/blog/`, Agents of Insight Newsletter → `#`, ARR Snowball Guide → `#`, Templates & Frameworks → `#`, Documentation → `#`, Webinars → `#` |
 | Partners | Direct link | `#` (not yet built) |
 | Case Studies | Direct link | `#` (not yet built) |
-| Company | Dropdown | About, Founders Story, Careers, Contact |
+| Company | Dropdown | **About** → `/company/about/`, Founders Story → `#`, Careers → `#`, **Contact** → `/company/contact/` |
 | Log In | Button | `https://app.getpacerai.com/.auth/login/aad` |
 | Request Demo | Button | `https://calendly.com/pacerai` |
 

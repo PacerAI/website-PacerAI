@@ -133,6 +133,14 @@ print(f"Created page ID {new_id} at {resp.json()['link']}")
 
 ---
 
+## Deploy: Blog Post
+
+See **[Blog Post Guide](blog-post-guide.md)** for the complete workflow — writing content, building from template, deploying, and updating the blog listing.
+
+Quick version: ask Claude Code to "write a blog post about [topic] and publish it."
+
+---
+
 ## Post-Deploy Verification
 
 ```bash

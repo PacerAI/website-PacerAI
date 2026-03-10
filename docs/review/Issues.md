@@ -35,3 +35,10 @@ Identified during PLAN phase (2026-03-09). Must be addressed before or during DE
 - **Impact:** The entire page content will be replaced by the approved design mockup.
 - **Action:** Current content saved to `docs/old_content.md` for reference. Pre-deploy backup will also be created per runbook.
 - **Status:** Archived
+
+## 6. Featured image (media 433) rendering above page content
+
+- **Impact:** TT4 theme renders the WordPress featured image above page content. The Pacer AI OG image (media ID 433) was set as featured image on all 18 pages, causing a large logo graphic to display above the nav on every page.
+- **Action:** Removed featured images from all pages via REST API (`featured_media: 0`). Our pages use inline CSS for all visuals — no WordPress featured images needed.
+- **Status:** RESOLVED (2026-03-10)
+- **Note:** Do not set featured images on Pacer AI pages. The OG image for social sharing is handled by Yoast (`_yoast_wpseo_opengraph-image`) and does not require a featured image.

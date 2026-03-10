@@ -4,6 +4,29 @@ All deployments logged here in reverse chronological order.
 
 ---
 
+## 2026-03-10 — New Blog Post + Yoast SEO + Featured Image Fix
+- **Pages deployed:** New blog post (441), updated blog listing (230)
+- **Deployed by:** Claude Code
+- **Approved by:** Will Sullivan
+- **Changes:**
+  - Published "Why LLMs Can't Build Your ARR Snowball from Operational Data" (page 441)
+  - Set Yoast meta descriptions and page titles on all 18 published pages via MCP `wp_update_post_meta`
+  - Set parent placeholder pages (362, 364, 366) and Login (134) to `noindex`
+  - Removed featured image (media 433) from all 18 pages — TT4 was rendering it above content
+  - Created `/blog-post` skill with draft preview and two review gates
+  - Updated `/blog-post` skill with content voice preferences (plain language, linking requirements)
+  - Homepage JSON-LD added (Organization, WebSite, WebPage schemas)
+  - Blog post FAQ schema added (FAQPage with Q&A pairs per post)
+  - SEO/AEO audit run, report saved to `docs/review/seo-audit-getpacerai-20260310.md`
+- **Issues resolved:** #2 (missing meta descriptions), #3 (generic page title), #6 (featured image above content)
+- **New source files:**
+  - `src/blog/posts/content-441.html`, `src/blog/posts/441-build.html`
+  - `.claude/skills/blog-post/SKILL.md`
+  - `docs/deploy/blog-post-guide.md`
+  - `docs/review/seo-audit-getpacerai-20260310.md`
+
+---
+
 ## 2026-03-10 — Blog System: JSON-LD Schema + Category Filtering + BB Cleanup
 - **Pages deployed:** Blog listing (230), 5 blog posts (358, 360, 368, 376, 378)
 - **Deployed by:** Claude Code

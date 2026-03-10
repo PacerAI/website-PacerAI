@@ -14,15 +14,15 @@ Identified during PLAN phase (2026-03-09). Must be addressed before or during DE
 
 - **Impact:** SEO — Yoast head includes the admin notice: "this page does not show a meta description because it does not have one."
 - **PRD specifies:** "Pacer AI turns CRM, ERP, and HRIS data into board-ready ARR Snowball reports and AI agent intelligence. Built for Operating Partners and SaaS CFOs."
-- **Action:** Set via Yoast SEO in WP admin (not via API, to preserve Yoast control).
-- **Status:** Pending human action
+- **Action:** Set via MCP `wp_update_post_meta` with `_yoast_wpseo_metadesc` key.
+- **Status:** RESOLVED (2026-03-10) — Meta descriptions set on all 18 published pages via MCP.
 
 ## 3. Page title is generic ("Home")
 
 - **Impact:** SEO — current `<title>` renders as "Home - Get Pacer AI"
 - **PRD specifies:** "Pacer AI — ARR Intelligence for PE-Backed SaaS"
-- **Action:** Set via Yoast SEO title field in WP admin.
-- **Status:** Pending human action
+- **Action:** Set via MCP `wp_update_post_meta` with `_yoast_wpseo_title` key.
+- **Status:** RESOLVED (2026-03-10) — Title set to "Pacer AI — ARR Intelligence for PE-Backed SaaS" via MCP.
 
 ## 4. CTA says "Learn more" instead of "Request a Demo"
 

@@ -241,13 +241,25 @@ git commit -m "feat: add blog post — Your Post Title"
 git push origin main
 ```
 
-### Step 12: Post-Publish Checklist
+### Step 12: Set Yoast SEO Meta
+
+Use MCP to set Yoast meta description and page title — no WP Admin needed:
+
+```
+mcp__wordpress-site__wp_update_post_meta(
+    ID={PAGE_ID},
+    meta={
+        "_yoast_wpseo_metadesc": "150-char meta description with primary keyword",
+        "_yoast_wpseo_title": "Post Title — Pacer AI"
+    }
+)
+```
+
+### Step 13: Post-Publish Checklist
 
 Tell the user:
-- [ ] Set Yoast meta description in WP Admin (Pages → find post → Yoast panel)
-- [ ] Set Yoast page title if the auto-generated one isn't ideal
+- [ ] Verify the post at its live URL
 - [ ] Verify the post appears on /blog/ with correct category filtering
-- [ ] Test the post URL directly
 - [ ] Log deploy in `docs/document/changelog.md`
 
 ## Editing an Existing Post

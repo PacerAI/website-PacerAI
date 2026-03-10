@@ -576,18 +576,18 @@ html, body, .wp-site-blocks {
 
 <!-- ═══════════════════════════════════════ CATEGORIES ═══════════════════════════════════════ -->
 <div class="category-bar">
-  <span class="cat-pill active">All Posts</span>
-  <span class="cat-pill">ARR Snowballs</span>
-  <span class="cat-pill">Frameworks</span>
-  <span class="cat-pill">RevOps</span>
-  <span class="cat-pill">AI &amp; Agents</span>
+  <span class="cat-pill active" data-filter="all">All Posts</span>
+  <span class="cat-pill" data-filter="arr-snowballs">ARR Snowballs</span>
+  <span class="cat-pill" data-filter="frameworks">Frameworks</span>
+  <span class="cat-pill" data-filter="revops">RevOps</span>
+  <span class="cat-pill" data-filter="ai-agents">AI &amp; Agents</span>
 </div>
 
 <!-- ═══════════════════════════════════════ BLOG GRID ═══════════════════════════════════════ -->
 <div class="blog-grid">
 
   <!-- Featured Post -->
-  <a href="/why-arr-waterfall-models-matter-for-saas-growth/" class="blog-card featured">
+  <a href="/why-arr-waterfall-models-matter-for-saas-growth/" class="blog-card featured" data-category="arr-snowballs">
     <div class="card-body">
       <div class="card-meta">
         <span class="card-category">ARR Snowballs</span>
@@ -600,7 +600,7 @@ html, body, .wp-site-blocks {
   </a>
 
   <!-- Post 2 -->
-  <a href="/using-ai-to-enable-revops-without-breaking-your-gtm/" class="blog-card">
+  <a href="/using-ai-to-enable-revops-without-breaking-your-gtm/" class="blog-card" data-category="revops">
     <div class="card-body">
       <div class="card-meta">
         <span class="card-category">RevOps</span>
@@ -613,7 +613,7 @@ html, body, .wp-site-blocks {
   </a>
 
   <!-- Post 3 -->
-  <a href="/arr-snowball-analysis-find-your-expansion-drivers/" class="blog-card">
+  <a href="/arr-snowball-analysis-find-your-expansion-drivers/" class="blog-card" data-category="arr-snowballs">
     <div class="card-body">
       <div class="card-meta">
         <span class="card-category">ARR Snowballs</span>
@@ -626,7 +626,7 @@ html, body, .wp-site-blocks {
   </a>
 
   <!-- Post 4 -->
-  <a href="/prevent-churn-in-high-value-accounts-with-arr-snowball/" class="blog-card">
+  <a href="/prevent-churn-in-high-value-accounts-with-arr-snowball/" class="blog-card" data-category="arr-snowballs">
     <div class="card-body">
       <div class="card-meta">
         <span class="card-category">ARR Snowballs</span>
@@ -639,7 +639,7 @@ html, body, .wp-site-blocks {
   </a>
 
   <!-- Post 5 -->
-  <a href="/what-is-an-arr-snowball-understanding-revenue-growth/" class="blog-card">
+  <a href="/what-is-an-arr-snowball-understanding-revenue-growth/" class="blog-card" data-category="arr-snowballs">
     <div class="card-body">
       <div class="card-meta">
         <span class="card-category">ARR Snowballs</span>
@@ -740,13 +740,35 @@ html, body, .wp-site-blocks {
 
 <script>
 (function(){
-  if(window.innerWidth>768) return;
-  document.querySelectorAll('#pacerai-blog .nav-links > li > a').forEach(function(a){
-    var li=a.parentElement;
-    if(!li.querySelector('.dropdown')) return;
-    a.addEventListener('click',function(e){
-      e.preventDefault();
-      li.classList.toggle('mobile-expanded');
+  // Mobile nav toggle
+  if(window.innerWidth<=768){
+    document.querySelectorAll('#pacerai-blog .nav-links > li > a').forEach(function(a){
+      var li=a.parentElement;
+      if(!li.querySelector('.dropdown')) return;
+      a.addEventListener('click',function(e){
+        e.preventDefault();
+        li.classList.toggle('mobile-expanded');
+      });
+    });
+  }
+
+  // Category filter
+  var pills=document.querySelectorAll('#pacerai-blog .cat-pill');
+  var cards=document.querySelectorAll('#pacerai-blog .blog-card');
+  pills.forEach(function(pill){
+    pill.addEventListener('click',function(){
+      pills.forEach(function(p){p.classList.remove('active');});
+      pill.classList.add('active');
+      var filter=pill.getAttribute('data-filter');
+      cards.forEach(function(card){
+        if(filter==='all'||card.getAttribute('data-category')===filter){
+          card.style.display='';
+          card.style.opacity='1';
+          card.style.transform='';
+        } else {
+          card.style.display='none';
+        }
+      });
     });
   });
 })();

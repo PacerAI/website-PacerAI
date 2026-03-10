@@ -196,6 +196,63 @@ done
 - `docs/design/pacerai-homepage-v2_2026-03-09.html` — current design reference
 - `01_PacerAI_Foundation/pacer-ai-brand-kit.html` — brand kit
 
+## Customer Logo Strip (Homepage)
+
+The homepage has a "Trusted by Revenue teams at leading companies" logo strip in `src/homepage/index-build.html`. Logo image files live in `img/customer-logos/`.
+
+### Current logos and sizes
+
+| Logo | WP Media URL | Inline height override |
+|------|-------------|----------------------|
+| Brandwatch | `wp-content/uploads/2026/03/Brandwatch.jpg` | 60px (default) |
+| Fortis Life Sciences | `wp-content/uploads/2026/03/Fortis-Life-Science-purple-logo.jpeg` | 60px (default) |
+| Platinum Equity | `wp-content/uploads/2026/03/Platinum-Equity-logo.png` | 180px (inline style) |
+| Semrush | `wp-content/uploads/2026/03/Semrush-Logo.png` | 60px (default) |
+| Summit Partners | `wp-content/uploads/2026/03/SUMMIT-Partners-Logo.png` | 50px (inline style) |
+
+### CSS (in homepage `<style>` block)
+
+- Default height: `60px` (set on `.logo-item` and `.logo-item img`)
+- Mobile (768px): `44px`
+- Logos display in original color, no filters
+- Opacity: `0.85` default, `1` on hover
+- Override per-logo size with `style="height:Npx"` on the `<img>` tag
+
+### Adding or replacing a customer logo
+
+1. **Add the logo file** to `img/customer-logos/`
+2. **Upload to WordPress media library:**
+   ```python
+   import requests, os
+   base_url = os.environ['WP_BASE_URL']
+   auth = (os.environ['WP_USER'], os.environ['WP_APP_PASSWORD'])
+
+   filepath = 'img/customer-logos/New-Logo.png'
+   with open(filepath, 'rb') as f:
+       data = f.read()
+   headers = {
+       'Content-Disposition': 'attachment; filename="New-Logo.png"',
+       'Content-Type': 'image/png',  # or image/jpeg
+   }
+   resp = requests.post(f'{base_url}/wp-json/wp/v2/media',
+                        headers=headers, data=data, auth=auth)
+   print(resp.json().get('source_url'))  # Save this URL
+   ```
+3. **Update `src/homepage/index-build.html`** — find the `<div class="logo-row">` section and add/replace the `<span class="logo-item">`:
+   ```html
+   <span class="logo-item"><img src="https://getpacerai.com/wp-content/uploads/2026/03/New-Logo.png" alt="Company Name"></span>
+   ```
+4. **Adjust size if needed** — square logos (1:1 ratio) need larger heights to match wide logos visually. Add `style="height:Npx"` to the `<img>` tag to override the default 60px.
+5. **Deploy homepage** (WP ID 25) and verify.
+6. **Important:** Image `src` must be an absolute WordPress media URL (`https://getpacerai.com/wp-content/uploads/...`). Relative paths will not resolve on WordPress.
+
+### Sizing tips
+
+- Wide/landscape logos (3:1+ ratio like Brandwatch, Semrush): default 60px works well
+- Square logos (1:1 ratio like Platinum Equity): need 2-3x the default height to appear balanced
+- Tall logos: reduce below 60px to prevent the strip from getting too tall
+- Always check visually after deploying — logo source files vary wildly in size/ratio
+
 ## Build Priority
 
 | Priority | Pages | Status |

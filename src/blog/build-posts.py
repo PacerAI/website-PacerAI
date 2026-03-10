@@ -23,6 +23,7 @@ POSTS = [
         "title_short": "ARR Waterfall Models",
         "category": "ARR Snowballs",
         "date": "January 27, 2026",
+        "date_iso": "2026-01-27",
     },
     {
         "id": 264,
@@ -30,6 +31,7 @@ POSTS = [
         "title_short": "AI for RevOps",
         "category": "RevOps",
         "date": "January 20, 2026",
+        "date_iso": "2026-01-20",
     },
     {
         "id": 244,
@@ -37,6 +39,7 @@ POSTS = [
         "title_short": "Expansion Drivers",
         "category": "ARR Snowballs",
         "date": "January 12, 2026",
+        "date_iso": "2026-01-12",
     },
     {
         "id": 236,
@@ -44,6 +47,7 @@ POSTS = [
         "title_short": "Churn Prevention",
         "category": "ARR Snowballs",
         "date": "January 12, 2026",
+        "date_iso": "2026-01-12",
     },
     {
         "id": 227,
@@ -51,6 +55,7 @@ POSTS = [
         "title_short": "What Is ARR Snowball",
         "category": "ARR Snowballs",
         "date": "January 12, 2026",
+        "date_iso": "2026-01-12",
     },
 ]
 
@@ -106,6 +111,7 @@ def build_post(template, post_meta, content):
     output = output.replace("{{TITLE_SHORT}}", post_meta["title_short"])
     output = output.replace("{{CATEGORY}}", post_meta["category"])
     output = output.replace("{{DATE}}", post_meta["date"])
+    output = output.replace("{{DATE_ISO}}", post_meta["date_iso"])
     output = output.replace("{{CONTENT}}", clean_content)
 
     return output

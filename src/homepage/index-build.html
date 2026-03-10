@@ -461,12 +461,17 @@ html, body, .wp-site-blocks {
     gap: 48px; flex-wrap: wrap;
   }
   #pacerai-homepage .logo-item {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 18px; font-weight: 600; letter-spacing: 0.06em;
-    color: rgba(138,149,168,0.4);
-    transition: color 0.2s;
+    display: flex; align-items: center; justify-content: center;
+    height: 36px;
+    opacity: 0.45;
+    filter: grayscale(100%) brightness(1.8);
+    transition: opacity 0.3s, filter 0.3s;
   }
-  #pacerai-homepage .logo-item:hover { color: rgba(112,196,156,0.6); }
+  #pacerai-homepage .logo-item:hover { opacity: 0.75; filter: grayscale(50%) brightness(1.8); }
+  #pacerai-homepage .logo-item img {
+    max-height: 36px; width: auto;
+    object-fit: contain;
+  }
 
   /* ─── SECTION HEADINGS ─── */
   #pacerai-homepage .section { padding: 100px 48px; }
@@ -991,7 +996,8 @@ html, body, .wp-site-blocks {
     /* ─── LOGO STRIP (mobile) ─── */
     #pacerai-homepage .logo-strip { padding: 32px 16px; }
     #pacerai-homepage .logo-row { gap: 24px; }
-    #pacerai-homepage .logo-item { font-size: 14px; }
+    #pacerai-homepage .logo-item { height: 28px; }
+    #pacerai-homepage .logo-item img { max-height: 28px; }
 
     /* ─── SECTIONS (mobile padding) ─── */
     #pacerai-homepage .section { padding: 60px 20px; }
@@ -1269,14 +1275,13 @@ html, body, .wp-site-blocks {
 
 <!-- ═══════════════════════════════════════ LOGO STRIP ═══════════════════════════════════════ -->
 <div class="logo-strip">
-  <div class="ls-label">Trusted by Revenue teams at high-growth SaaS companies</div>
+  <div class="ls-label">Trusted by Revenue teams at leading companies</div>
   <div class="logo-row">
-    <span class="logo-item">ACME CLOUD</span>
-    <span class="logo-item">SERVELIX</span>
-    <span class="logo-item">DATAPLEX</span>
-    <span class="logo-item">VERTFLOW</span>
-    <span class="logo-item">NEXBRIDGE</span>
-    <span class="logo-item">COREUM</span>
+    <span class="logo-item"><img src="img/customer-logos/Brandwatch.jpg" alt="Brandwatch"></span>
+    <span class="logo-item"><img src="img/customer-logos/Fortis Life Science purple logo.jpeg" alt="Fortis Life Science"></span>
+    <span class="logo-item"><img src="img/customer-logos/Platinum Equity logo.png" alt="Platinum Equity"></span>
+    <span class="logo-item"><img src="img/customer-logos/Semrush png Logo.png" alt="Semrush"></span>
+    <span class="logo-item"><img src="img/customer-logos/Summit Partners.jpg" alt="Summit Partners"></span>
   </div>
 </div>
 

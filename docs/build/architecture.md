@@ -74,7 +74,8 @@ Every page is a single `<!-- wp:html -->` Gutenberg block containing:
 | `solutions/customer-data-cube.html` | AEO definition, problem grid, 6-dimension grid, use cases, dashboard mockup, FAQ (JSON-LD schema), CTA |
 | `company/about.html` | Mission card, old-way/new-way contrast grid, founder section, 4 values cards, tech partners strip, CTA |
 | `company/contact.html` | 2-column layout: contact form + sidebar cards (Calendly, email, partnerships), CTA |
-| `blog/index-build.html` | Blog index with featured post + card grid, newsletter CTA |
+| `blog/index-build.html` | Blog index with featured post + card grid, category pill filters (JS), newsletter CTA |
+| `blog/posts/{id}-build.html` | Individual blog posts (5 total, generated from `post-template.html`) |
 
 ---
 
@@ -157,6 +158,11 @@ getpacerai.com/
 ├── /company/                                   → ID 366 (parent placeholder)
 │   ├── /company/about/                         → ID 374
 │   └── /company/contact/                       → ID 375
+├── /why-arr-waterfall-models-matter-.../         → ID 358 (blog post)
+├── /using-ai-to-enable-revops-.../              → ID 360 (blog post)
+├── /arr-snowball-analysis-.../                  → ID 368 (blog post)
+├── /prevent-churn-.../                          → ID 376 (blog post)
+├── /what-is-an-arr-snowball-.../                → ID 378 (blog post)
 ├── /pricing/                                   → ID 111 (legacy)
 └── /login/                                     → ID 134 (legacy)
 ```
@@ -225,3 +231,5 @@ src/
 | TT4 theme | Overrides needed to hide chrome, page title, and spacer |
 | Shared elements | Nav/footer/CSS duplicated in each file — changes require batch redeploy |
 | `backdrop-filter` | Creates containing block — disabled on mobile nav |
+| Blog as Pages | WordPress Posts strip `<style>` tags — blog posts deployed as Pages with HTML-only categories |
+| JSON-LD schema | Article schema on blog posts, CollectionPage/ItemList on blog listing, FAQ on solutions pages |

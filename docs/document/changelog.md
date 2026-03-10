@@ -4,6 +4,23 @@ All deployments logged here in reverse chronological order.
 
 ---
 
+## 2026-03-10 — Blog System: JSON-LD Schema + Category Filtering + BB Cleanup
+- **Pages deployed:** Blog listing (230), 5 blog posts (358, 360, 368, 376, 378)
+- **Deployed by:** Claude Code
+- **Approved by:** Will Sullivan
+- **Changes:**
+  - Added JSON-LD structured data to all blog pages (Article schema on posts, CollectionPage + ItemList on listing)
+  - Added client-side category pill filtering (vanilla JS, `data-category` attributes)
+  - Confirmed no Beaver Builder CSS remains in any source files
+  - Only 1 BB plugin remains: "Ultimate Addons for Beaver Builder - Lite" (needs manual deactivation)
+  - Created SEO/AEO audit Claude Skill at `Claude-skills/seo-aeo-audit/`
+- **Schema types deployed:**
+  - Blog posts: `Article` with headline, datePublished, author (Organization), publisher with logo, articleSection
+  - Blog listing: `CollectionPage` + `ItemList` with 5 ListItems
+- **Issues:** Will to deactivate "Ultimate Addons for BB - Lite" plugin in WP admin
+
+---
+
 ## 2026-03-10 — P1 Site Expansion: 5 New Pages + Cross-Linking + Blog Update
 - **Pages deployed:**
   - Platform Overview (ID 371) → https://getpacerai.com/platform/overview/

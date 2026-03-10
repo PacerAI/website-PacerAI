@@ -97,6 +97,16 @@ Follow this sequence for every change:
 - **CTA language:** "Request a Demo", "Talk to a RevOps Expert" — never "Get Started Free"
 - **Voice:** Confident, precise. Never use "leverage" or "utilize."
 
+## Claude Code Skill
+
+This repo includes a project-level skill at `.claude/skills/webdev-getpacerai/SKILL.md`.
+
+**Invoke:** `/webdev-getpacerai [action] [details]`
+
+The skill encapsulates the full page registry, deploy workflows, brand constraints, and operating rules from this file and `CLAUDE.md`. It is also symlinked to `~/.claude/skills/webdev-getpacerai` for cross-session availability.
+
+When making changes to the skill, edit the project-level file (`.claude/skills/webdev-getpacerai/SKILL.md`) — the user-level symlink points here.
+
 ## MCP Servers Available
 
 - `https://mcp.slack.com/mcp` — post deploy notifications to #website channel

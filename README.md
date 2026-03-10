@@ -43,6 +43,10 @@ This repo manages the design, development, and deployment of the Pacer AI market
 ## Repository Structure
 
 ```
+.claude/
+└── skills/
+    └── webdev-getpacerai/  # Claude Code skill (symlinked to ~/.claude/skills/)
+
 src/
 ├── homepage/           # Homepage build file
 ├── blog/               # Blog index + post templates
@@ -97,9 +101,33 @@ See `docs/deploy/runbook.md` for full instructions including backup, verificatio
 
 ## Agents & Skills
 
+### Claude Code Skill
+
+This repo includes a project-level Claude Code skill for website development:
+
+```
+.claude/skills/webdev-getpacerai/SKILL.md
+```
+
+**Invoke with:** `/webdev-getpacerai [action] [details]`
+
+Examples:
+- `/webdev-getpacerai deploy all pages`
+- `/webdev-getpacerai build /solutions/virtual-data-room page`
+- `/webdev-getpacerai update nav across all pages`
+
+The skill includes the full page registry, deploy workflows (single, batch, new page), brand constraints, and operating rules. It is also symlinked to `~/.claude/skills/webdev-getpacerai` for availability across all sessions.
+
+### Key Files
+
 - **CLAUDE.md** — Claude Code guidance, page registry, deploy patterns
 - **AGENTS.md** — Operating instructions, PDBRDD workflow, brand constraints
-- **MCP Servers in use:** Slack (notifications), Gmail (stakeholder comms), Notion (project tracking)
+
+### MCP Servers
+
+- Slack (`https://mcp.slack.com/mcp`) — deploy notifications
+- Gmail (`https://gmail.mcp.claude.com/mcp`) — stakeholder comms
+- Notion (`https://mcp.notion.com/mcp`) — project tracking
 
 ---
 

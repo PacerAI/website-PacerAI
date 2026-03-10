@@ -212,6 +212,14 @@ Every page follows the same pattern:
 - **Yoast meta description missing** — must be set in WP admin per PRD
 - **Yoast page title** — should be "Pacer AI — ARR Intelligence for PE-Backed SaaS"
 
+## Claude Code Skill
+
+This repo includes a project-level skill: `.claude/skills/webdev-getpacerai/SKILL.md`
+
+Invoke with `/webdev-getpacerai [action]` — includes page registry, deploy workflows, brand constraints, and operating rules.
+
+Also symlinked to `~/.claude/skills/webdev-getpacerai` for cross-session availability. Edit the project-level file — the symlink points here.
+
 ## Flag for Human Review
 
 - Changes to navigation structure or page slug/permalink

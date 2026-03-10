@@ -59,6 +59,16 @@ Pacer AI is an ARR intelligence platform built for PE-backed B2B SaaS companies 
 - **Analytics:** Google Site Kit (Google Analytics + Search Console)
 - **Code injection:** Head, Footer and Post Injections plugin + WPCode Lite
 
+### Claude Code Skill
+
+A project-level Claude Code skill is available for website development tasks:
+
+- **Location:** `.claude/skills/webdev-getpacerai/SKILL.md`
+- **Invoke:** `/webdev-getpacerai [action] [details]`
+- **Examples:** `/webdev-getpacerai deploy all pages`, `/webdev-getpacerai build /solutions/virtual-data-room page`
+- **Also symlinked to:** `~/.claude/skills/webdev-getpacerai` (available in all Claude Code sessions)
+- **Contains:** Page registry, REST API deploy workflows (single, batch, new page), brand constraints, TT4 override patterns, operating rules
+
 ### Key Technical Details
 - Homepage page ID: **25**
 - Homepage slug: `no-title` (known issue — needs review before changing)
